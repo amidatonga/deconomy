@@ -25,7 +25,7 @@ SECRET_KEY = '-(dy#(896hcm$r!d0cpu+26fshq+a&oyee#dqh2y+h5s6ey7c*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'amidatonga.pythonanywhere.com']
 
 
 # Application definition
