@@ -16,3 +16,7 @@ a:hover {
   text-decoration: none;
   color: blue;
 }
+
+.post-form textarea, .post-form input {
+    width: 100%;
+}
