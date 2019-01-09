@@ -17,6 +17,11 @@ a:hover {
   color: blue;
 }
 
+.form-section {
+  border: 1px solid gray;
+  padding: 20px;
+}
+
 .post-form textarea, .post-form input {
     width: 100%;
 }
