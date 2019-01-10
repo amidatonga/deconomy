@@ -2,6 +2,7 @@
 {% block content %}
       <div class="post">
        <h2>{{ object.title }}</h2>
+       <p>Author: <b>{{ post.author }}</b></p>
        <p>{{ object.text|linebreaksbr }}</p>
        <p>{{ object.created_date }}</p>
         {% if object.published_date %}
