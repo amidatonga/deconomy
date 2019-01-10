@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('news.urls')),
     path('reg/', userViews.register, name='reg'),
     path('profile/', userViews.profile, name='profile'),
+    path('update_profile/', userViews.update_profile, name='update_profile'),
     path('user/', authViews.LoginView.as_view(template_name='users/user.html'), name='auth'),
     path('exit/', authViews.LogoutView.as_view(template_name='users/exit.html'), name='exit')
 ]

@@ -2,7 +2,14 @@
 {% block content %}
       <div class="post">
        <h2>{{ object.title }}</h2>
-       <p>Author: <b>{{ post.author }}</b></p>
+       <p>Author:</b></p>
+       <div class="media text-muted pt-3 mb-5">
+       <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;">
+       <p class="media-body pb-3 mb-0 small lh-125">
+         Created by
+         <strong class="d-block text-gray-dark">@{{ object.author }}</strong>
+       </p>
+       </div>
        <p>{{ object.text|linebreaksbr }}</p>
        <p>{{ object.created_date }}</p>
         {% if object.published_date %}

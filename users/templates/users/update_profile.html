@@ -1,0 +1,16 @@
+{% extends 'news/base.html' %}
+{% block content %}
+      <div class="form-section">
+        <h2>Change profile data</h2>
+        <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+        <form method="POST" class="post-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ update_user.as_p }}
+          {{ update_profile.as_p }}
+          <button type="submit" class="btn btn-outline-warning">Update and save</button>
+        </form>
+
+      <hr>
+      <p>Press exit to logout <a href="{% url 'exit' %}">Exit</a></p>
+    </div>
+{% endblock content %}

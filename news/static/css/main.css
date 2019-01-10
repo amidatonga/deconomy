@@ -12,6 +12,10 @@ body {
   margin-bottom: 40px;
 }
 
+.avatar-img {
+  border-radius: 50%;
+}
+
 a:hover {
   text-decoration: none;
   color: blue;

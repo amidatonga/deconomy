@@ -2,8 +2,9 @@
 {% block content %}
     <div class="form-section">
       <h2>User "{{ user.username }}"</h2>
+      <p><a href="{% url 'update_profile' %}">Edit Profile</a></p>
       <div class="media text-muted pt-3">
-      <img src="{{ user.profile.img.url }}" alt="avatar" class="mr-2 rounded" style="width: 64px; height: 64px;">
+      <img src="{{ user.profile.img.url }}" alt="avatar" class="mr-2 rounded" style="width: 128px; height: 128px;">
       <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
         <strong class="d-block text-gray-dark">@{{ user.username }}</strong>
         <b>Email: </b> {{ user.email }}
@@ -12,7 +13,6 @@
       <br>
       <p><b>Age: </b> {{ user.profile.age }}</p>
       <p><b>Bio: </b>{{ user.profile.bio }}</p>
-
       <hr>
       <p>Press exit to logout <a href="{% url 'exit' %}">Exit</a></p>
     </div>
