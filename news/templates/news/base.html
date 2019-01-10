@@ -25,18 +25,21 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'new_post' %}">New publication</a>
         </li>
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exit' %}" tabindex="-1" aria-disabled="true">Exit</a>
+          </li>
+        {% else %}
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#">Dropdown</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
+          <a class="nav-link" href="{% url 'reg' %}">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="nav-link" href="{% url 'auth' %}" tabindex="-1" aria-disabled="true">Login</a>
         </li>
+        {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -48,7 +51,15 @@
           <div class="container content">
             <div class="row">
               <div class="col-md-8">
-
+                <div>
+                {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                  {% endfor %}
+                {% endif %}
+                </div>
                 {% block content %}
                 {% endblock content %}
               </div>

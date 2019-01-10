@@ -1,0 +1,8 @@
+{% extends 'news/base.html' %}
+{% block content %}
+    <div class="form-section">
+      <h2>User "{{ user.username }}"</h2>
+      <hr>
+      <p>Press exit to logout <a href="{% url 'exit' %}">Exit</a></p>
+    </div>
+{% endblock content %}
