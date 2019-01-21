@@ -11,6 +11,8 @@
       </p>
       </div>
       <br>
+      <p>Articles: {{ Post.page_obj.paginator.count }}</p>
+      <!-- need to resolve above line: how to calculate here articles -->
       <p><b>Age: </b> {{ user.profile.age }}</p>
       <p><b>Bio: </b>{{ user.profile.bio }}</p>
       <hr>

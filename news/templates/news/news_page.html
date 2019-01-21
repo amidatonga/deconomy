@@ -2,7 +2,7 @@
 {% block content %}
       <div class="post">
        <h2>{{ object.title }}</h2>
-       <p>Author:</b></p>
+       <p>Author:</p>
        <div class="media text-muted pt-3 mb-5">
        <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;">
        <p class="media-body pb-3 mb-0 small lh-125">
@@ -19,6 +19,8 @@
         <a class="button" href="{% url 'edit_post' object.id %}">Edit</a>
         <a href="{% url 'delete_post' object.id %}">Delete</a>
         {% endif %}
+        <p>All articles by: <a href="{% url 'user_news' object.author %}">{{ object.author }}</a></p>
+
        <br><br>
       </div>
 {% endblock content %}

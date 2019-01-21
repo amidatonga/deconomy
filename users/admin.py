@@ -1,4 +1,13 @@
 from django.contrib import admin
+from django.db import models
 from .models import Profile
+from .models import *
 
-admin.site.register(Profile)
+
+class UserProfile(admin.ModelAdmin):
+    list_display=('user_id', 'user', 'age', 'copywriter')
+    search_fields=['user']
+    list_filter = ('user','age',)
+
+
+admin.site.register(Profile, UserProfile)

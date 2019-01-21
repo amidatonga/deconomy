@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
 from django.views.generic import (
         ListView,
         DetailView,
@@ -17,12 +18,27 @@ class NewsList(ListView):
     template_name = 'news/news_list.html'
     context_object_name = 'news'
     ordering = ['-published_date']
+    paginate_by = 3
 
     def get_context_data(self, **kwards):
         ctx = super(NewsList, self).get_context_data(**kwards)
         ctx['title'] = 'Main page'
         return ctx
 
+class UserNewsList(ListView):
+    model = Post
+    template_name = 'news/user_news.html'
+    context_object_name = 'news'
+    paginate_by = 3
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-published_date')
+
+    def get_context_data(self, **kwards):
+        ctx = super(UserNewsList, self).get_context_data(**kwards)
+        ctx['title'] = f"All articles by {self.kwargs.get('username')}"
+        return ctx
 
 class NewsPage(DetailView):
     model = Post
