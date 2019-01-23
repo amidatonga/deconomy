@@ -1,11 +1,14 @@
 from django.contrib import admin
 from .models import Post
+from users import models
+
 
 
 class PostAdmin(admin.ModelAdmin):
+    model = models.Profile
     list_display=('author', 'title', 'created_date', 'published_date')
     list_filter = ('author',)
-    search_fields=['Post__author', 'post__title']
+    search_fields=['title', 'text']
 
 
 admin.site.register(Post, PostAdmin)
