@@ -20,10 +20,11 @@ class NewsList(ListView):
     ordering = ['-published_date']
     paginate_by = 3
 
-    def get_context_data(self, **kwards):
-        ctx = super(NewsList, self).get_context_data(**kwards)
+    def get_context_data(self, **kwargs):
+        ctx = super(NewsList, self).get_context_data(**kwargs)
         ctx['title'] = 'Main page'
         return ctx
+
 
 class UserNewsList(ListView):
     model = Post
@@ -35,17 +36,18 @@ class UserNewsList(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-published_date')
 
-    def get_context_data(self, **kwards):
-        ctx = super(UserNewsList, self).get_context_data(**kwards)
+    def get_context_data(self, **kwargs):
+        ctx = super(UserNewsList, self).get_context_data(**kwargs)
         ctx['title'] = f"All articles by {self.kwargs.get('username')}"
         return ctx
+
 
 class NewsPage(DetailView):
     model = Post
     template_name = 'news/news_page.html'
 
-    def get_context_data(self, **kwords):
-        ctx = super(NewsPage, self).get_context_data(**kwords)
+    def get_context_data(self, **kwargs):
+        ctx = super(NewsPage, self).get_context_data(**kwargs)
         ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
         return ctx
 

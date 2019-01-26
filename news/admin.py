@@ -6,9 +6,9 @@ from users import models
 
 class PostAdmin(admin.ModelAdmin):
     model = models.Profile
-    list_display=('author', 'title', 'created_date', 'published_date')
+    list_display = ('author', 'title')
     list_filter = ('author',)
-    search_fields=['title', 'text']
+    search_fields = ['title', 'text']
 
 
 admin.site.register(Post, PostAdmin)

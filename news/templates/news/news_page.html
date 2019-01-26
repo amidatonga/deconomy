@@ -13,7 +13,7 @@
        <p>{{ object.text|linebreaksbr }}</p>
        <p>{{ object.created_date }}</p>
         {% if object.published_date %}
-          <p>Published: <b>{{ object.published_date}}</b></p>
+          <p>Published: <b>{{ object.published_date }}</b></p>
         {% endif %}
         {% if object.author == user %}
         <a class="button" href="{% url 'edit_post' object.id %}">Edit</a>
