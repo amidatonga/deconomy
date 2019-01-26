@@ -10,5 +10,6 @@ urlpatterns = [
     path('news/new_publication', views.CreateNews.as_view(), name='new_post'),
     path('news/<int:pk>/edit', views.EditNews.as_view(), name='edit_post'),
     path('news/<int:pk>/delete', views.DeleteNews.as_view(), name='delete_post'),
+    path('category/<slug:slug>', views.CategoryView.as_view(), name='category_news'),
 
 ]
