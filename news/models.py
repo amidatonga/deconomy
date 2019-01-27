@@ -25,6 +25,11 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('news_page', kwargs={'pk': self.pk})
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'category':
+            kwargs['queryset'] = Category.objects.filter(parent__isnull=False)
+        return super(PostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class CategoryQueryset(models.QuerySet):
 
