@@ -7,6 +7,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('author', 'title', 'category')
     list_filter = ('author',)
     search_fields = ['title', 'text', 'author__username']
+    prepopulated_fields = {'slug': ('title',)}
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':

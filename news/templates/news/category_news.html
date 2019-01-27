@@ -6,7 +6,7 @@
   </div>
   {% for post in news %}
     <div class="post">
-     <h2><a href="{% url 'news_page' pk=post.pk %}">{{ post.title }}</a></h2>
+     <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
      <p>{{ post.text|striptags|truncatechars:200 }}</p>
      <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author }}</a></p>
      <p>Published: <b>{{ post.published_date}}</b></p>
