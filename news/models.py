@@ -11,6 +11,7 @@ class Post(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     category = models.ForeignKey(to='news.Category', on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, db_index=True, unique=True)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
@@ -23,7 +24,9 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news_page', kwargs={'pk': self.pk})
+        return reverse('news_page', kwargs={'slug': self.slug})
+
+
 
 
 class CategoryQueryset(models.QuerySet):

@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Category
 from django.utils import timezone
 from .forms import PublicationForm
+import pytils
 
 
 class NewsList(ListView):
@@ -48,7 +49,7 @@ class NewsPage(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
-        ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
+        ctx['title'] = Post.objects.filter(slug=self.kwargs['slug']).first()
         return ctx
 
 
@@ -59,6 +60,7 @@ class CreateNews(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.published_date = timezone.now()
+        form.instance.slug = pytils.translit.slugify(form.instance.title)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
