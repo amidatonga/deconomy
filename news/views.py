@@ -57,7 +57,7 @@ class NewsPage(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
         post = get_object_or_404(Post, slug=self.kwargs['slug'])
-        news = Post.objects.filter(category=post.category, published_date__isnull=False)
+        news = Post.objects.filter(category=post.category, published_date__isnull=False).exclude(id=post.id)
         ctx.update({
             'title': post,
             'news_count': len(news),
