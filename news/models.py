@@ -1,12 +1,17 @@
+import itertools
+
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from pytils.translit import slugify
 
 
 class Post(models.Model):
 
     class Meta:
         ordering = ('-published_date', )
+
+    POSTS_ON_PAGE = 3
 
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     category = models.ForeignKey(to='news.Category', on_delete=models.PROTECT, blank=True, null=True)
@@ -26,7 +31,21 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('news_page', kwargs={'slug': self.slug})
 
+    # https://keyerror.com/blog/automatically-generating-unique-slugs-in-django
+    def save(self, **kwargs):
 
+        if not self.slug:
+            max_length = Post._meta.get_field('slug').max_length
+            self.slug = orig = slugify(self.title)[:max_length]
+
+            for x in itertools.count(1):
+                if not Post.objects.filter(slug=self.slug).exists():
+                    break
+
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+        super(Post, self).save(**kwargs)
 
 
 class CategoryQueryset(models.QuerySet):

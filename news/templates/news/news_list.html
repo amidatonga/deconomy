@@ -1,41 +1,53 @@
 {% extends 'news/base.html' %}
 {% block content %}
-  <div class="page-header">
-    <h1>Crypto News website</h1>
-  </div>
-  {% for post in news %}
-    <div class="post">
-     <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
-     <p>{{ post.text|striptags|truncatechars:200 }}</p>
-     <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author }}</a></p>
-     <p>Published: <b>{{ post.published_date}}</b></p>
-     {% if post.category %}
-        <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
-     {% endif %}
-     <br><br>
-   </div>
-  {% endfor %}
-
-  {% if is_paginated %}
-    {% if page_obj.has_previous %}
-      <a href="/" class="btn btn-outline-warning">Home</a>
-      <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-warning"><</a>
+    <div class="page-header">
+        {% if category %}
+            <h1>Category: {{ category.title }}</h1>
+            <p>Articles: {{ news_count }}</p>
+        {% elif author_username %}
+            <h1>All articles by {{ author_username }}</h1>
+            <p>Articles: {{ news_count }}</p>
+        {% else %}
+            <h1>Crypto News website</h1>
+        {% endif %}
+    </div>
+    {% include 'news/includes/posts.html' %}
+    {% if one_more %}
+        <button id="load_more" class="btn btn-outline-warning">Load more</button>
     {% endif %}
-
-    {% for num in page_obj.paginator.page_range %}
-      {% if num == page_obj.number %}
-        <button class='btn btn-warning'>{{ num }}</button>
-      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a href="?page={{ num }}" class="btn btn-outline-warning">{{ num }}</a>
-      {% endif %}
-
-
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-warning">></a>
-      <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-warning">Last page</a>
-    {% endif %}
-  {% endif %}
-
 {% endblock content %}
+
+
+{% block extra_js %}
+<script type="text/javascript">
+
+    var csrftoken = getCookie('csrftoken');
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('#load_more').on('click', function(elm) {
+        var url = "{% url 'api_news_more' %}";
+        var current_news = $('div[id^="post-"]').last().attr('id').split('-')[1];
+        var data = {
+            {% if category %}'category': '{{ category.slug }}',{% endif %}
+            {% if author_username %}'author': '{{ author_username }}',{% endif %}
+            'current_news': current_news
+        };
+        $.post(
+            url, data, function (resp) {
+                $('#load_more').before(resp.html);
+                if (!resp.one_more) {
+                    $('#load_more').hide();
+                }
+            }
+        )
+    });
+
+</script>
+{% endblock %}

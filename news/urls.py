@@ -1,9 +1,10 @@
 from django.urls import path
-from django.conf.urls import url
 from . import views
 
 
 urlpatterns = [
+    path('api/news/more', views.api_get_news_more, name='api_news_more'),
+
     path('', views.NewsList.as_view(), name='news_list'),
     path('user/<str:username>', views.UserNewsList.as_view(), name='user_news'),
     path('news/new_publication', views.CreateNews.as_view(), name='new_post'),
