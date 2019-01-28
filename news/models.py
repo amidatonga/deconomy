@@ -8,6 +8,8 @@ class Post(models.Model):
     class Meta:
         ordering = ('-published_date', )
 
+    POSTS_ON_PAGE = 3
+
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     category = models.ForeignKey(to='news.Category', on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=200)

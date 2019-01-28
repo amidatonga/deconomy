@@ -1,0 +1,14 @@
+{% for post in news %}
+    <div class="post" id="post-{{ post.id }}">
+        <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
+        <p>{{ post.text|striptags|truncatechars:200 }}</p>
+        {% if not author_username %}
+            <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author }}</a></p>
+        {% endif %}
+        <p>Published: <b>{{ post.published_date}}</b></p>
+        {% if not category and post.category %}
+            <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
+        {% endif %}
+        <br><br>
+    </div>
+{% endfor %}

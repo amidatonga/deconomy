@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.views.decorators.http import require_http_methods
 from django.views.generic import (
         ListView,
         DetailView,
@@ -17,29 +20,34 @@ import pytils
 class NewsList(ListView):
     model = Post
     template_name = 'news/news_list.html'
-    context_object_name = 'news'
-    ordering = ['-published_date']
-    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         ctx = super(NewsList, self).get_context_data(**kwargs)
-        ctx['title'] = 'Main page'
+        news = Post.objects.all()
+        ctx.update({
+            'title': 'Main page',
+            'news_count': len(news),
+            'one_more': len(news) > Post.POSTS_ON_PAGE,
+        })
+        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
 class UserNewsList(ListView):
     model = Post
-    template_name = 'news/user_news.html'
-    context_object_name = 'news'
-    paginate_by = 3
-
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-published_date')
+    template_name = 'news/news_list.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(UserNewsList, self).get_context_data(**kwargs)
-        ctx['title'] = f"All articles by {self.kwargs.get('username')}"
+        user = get_object_or_404(User, username=self.kwargs['username'])
+        news = user.post_set.all()
+        ctx.update({
+            'title': f'All articles by {self.kwargs["username"]}',
+            'news_count': len(news),
+            'one_more': len(news) > Post.POSTS_ON_PAGE,
+            'author_username': self.kwargs['username'],
+        })
+        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
@@ -49,7 +57,15 @@ class NewsPage(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
-        ctx['title'] = Post.objects.filter(slug=self.kwargs['slug']).first()
+        post = get_object_or_404(Post, slug=self.kwargs['slug'])
+        news = Post.objects.filter(category=post.category)
+        ctx.update({
+            'title': post,
+            'news_count': len(news),
+            'one_more': len(news) > Post.POSTS_ON_PAGE,
+            'category': post.category,
+        })
+        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
@@ -101,22 +117,50 @@ class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-class CategoryView(ListView):
-    model = Post
-    template_name = 'news/category_news.html'
-    context_object_name = 'news'
-    paginate_by = 3
-
-    def get_queryset(self):
-        category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return category.post_set.all()
+class CategoryView(DetailView):
+    model = Category
+    template_name = 'news/news_list.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(CategoryView, self).get_context_data(**kwargs)
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        ctx['category'] = category
-        ctx['title'] = f'Категория: {category.title}'
+        news = category.post_set.all()
+        ctx.update({
+            'title': f'Категория: {category.title}',
+            'news_count': len(news),
+            'one_more': len(news) > Post.POSTS_ON_PAGE,
+            'category': category,
+        })
+        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
+
+
+@require_http_methods(['POST', ])
+def api_get_news_more(request, template_name='news/includes/posts.html'):
+
+    post = get_object_or_404(Post, id=request.POST.get('current_news'))
+
+    def add_query(params, q, k):
+        value = request.POST.get(k)
+        if value is not None:
+            params[q] = value
+
+    filter_params = {}
+    add_query(filter_params, 'category__slug', 'category')
+    add_query(filter_params, 'author__username', 'author')
+    filter_params['published_date__lt'] = post.published_date
+
+    news = Post.objects.filter(**filter_params)
+    one_more = len(news) > Post.POSTS_ON_PAGE
+
+    context = {
+        'news': news[:Post.POSTS_ON_PAGE],
+        'category': request.POST.get('category'),
+        'author_username': request.POST.get('author'),
+    }
+    html = render_to_string(template_name, context=context)
+    return JsonResponse({'html': html, 'one_more': one_more})
+
 
 
 # def new_post(request):
