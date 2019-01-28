@@ -14,7 +14,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Category
 from django.utils import timezone
 from .forms import PublicationForm
-import pytils
 
 
 class NewsList(ListView):
@@ -23,7 +22,7 @@ class NewsList(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(NewsList, self).get_context_data(**kwargs)
-        news = Post.objects.all()
+        news = Post.objects.filter(published_date__isnull=False)
         ctx.update({
             'title': 'Main page',
             'news_count': len(news),
@@ -40,7 +39,7 @@ class UserNewsList(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(UserNewsList, self).get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.kwargs['username'])
-        news = user.post_set.all()
+        news = user.post_set.filter(published_date__isnull=False)
         ctx.update({
             'title': f'All articles by {self.kwargs["username"]}',
             'news_count': len(news),
@@ -58,7 +57,7 @@ class NewsPage(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
         post = get_object_or_404(Post, slug=self.kwargs['slug'])
-        news = Post.objects.filter(category=post.category)
+        news = Post.objects.filter(category=post.category, published_date__isnull=False)
         ctx.update({
             'title': post,
             'news_count': len(news),
@@ -76,7 +75,6 @@ class CreateNews(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.published_date = timezone.now()
-        form.instance.slug = pytils.translit.slugify(form.instance.title)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -124,7 +122,7 @@ class CategoryView(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(CategoryView, self).get_context_data(**kwargs)
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        news = category.post_set.all()
+        news = category.post_set.filter(published_date__isnull=False)
         ctx.update({
             'title': f'Категория: {category.title}',
             'news_count': len(news),
