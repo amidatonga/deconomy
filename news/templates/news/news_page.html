@@ -19,8 +19,8 @@
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
         {% if object.author == user %}
-        <a class="button" href="{% url 'edit_post' object.slug %}">Edit</a>
-        <a href="{% url 'delete_post' object.slug %}">Delete</a>
+        <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
+        <a href="{% url 'delete_post' post.slug %}">Delete</a>
         {% endif %}
         <br><br>
         <p>All articles by: <a href="{% url 'user_news' object.author %}">{{ object.author }}</a></p>
