@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
@@ -16,6 +17,20 @@ from django.utils import timezone
 from .forms import PublicationForm
 
 
+def update_news_ctx(ctx, request, news):
+    query = request.GET.get('query')
+    if query is not None:
+        qs = Q(title__icontains=query) | Q(text__icontains=query)
+        news = news.filter(qs)
+    ctx.update({
+        'news_count': len(news),
+        'one_more': len(news) > Post.POSTS_ON_PAGE,
+        'query': query,
+    })
+    ctx['news'] = news[:Post.POSTS_ON_PAGE]
+    return ctx
+
+
 class NewsList(ListView):
     model = Post
     template_name = 'news/news_list.html'
@@ -23,12 +38,10 @@ class NewsList(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsList, self).get_context_data(**kwargs)
         news = Post.objects.filter(published_date__isnull=False)
+        update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': 'Main page',
-            'news_count': len(news),
-            'one_more': len(news) > Post.POSTS_ON_PAGE,
         })
-        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
@@ -40,13 +53,11 @@ class UserNewsList(ListView):
         ctx = super(UserNewsList, self).get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.kwargs['username'])
         news = user.post_set.filter(published_date__isnull=False)
+        update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': f'All articles by {self.kwargs["username"]}',
-            'news_count': len(news),
-            'one_more': len(news) > Post.POSTS_ON_PAGE,
             'author_username': self.kwargs['username'],
         })
-        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
@@ -58,13 +69,11 @@ class NewsPage(DetailView):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
         post = get_object_or_404(Post, slug=self.kwargs['slug'])
         news = Post.objects.filter(category=post.category, published_date__isnull=False).exclude(id=post.id)
+        update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': post,
-            'news_count': len(news),
-            'one_more': len(news) > Post.POSTS_ON_PAGE,
             'category': post.category,
         })
-        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
@@ -123,13 +132,11 @@ class CategoryView(DetailView):
         ctx = super(CategoryView, self).get_context_data(**kwargs)
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
         news = category.post_set.filter(published_date__isnull=False)
+        update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': f'Категория: {category.title}',
-            'news_count': len(news),
-            'one_more': len(news) > Post.POSTS_ON_PAGE,
             'category': category,
         })
-        ctx['news'] = news[:Post.POSTS_ON_PAGE]
         return ctx
 
 
