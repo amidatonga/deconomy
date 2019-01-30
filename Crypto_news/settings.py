@@ -142,5 +142,6 @@ CKEDITOR_CONFIGS = {
                 'Image',
             ]},
         ],
+        'format_tags': 'p;h2;h3',
     },
 }
