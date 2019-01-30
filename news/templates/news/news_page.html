@@ -10,7 +10,7 @@
          <strong class="d-block text-gray-dark">@{{ object.author }}</strong>
        </p>
        </div>
-       <p>{{ object.text|linebreaksbr }}</p>
+       <p>{{ object.text|safe }}</p>
        <p>{{ object.created_date }}</p>
         {% if object.published_date %}
           <p>Published: <b>{{ object.published_date }}</b></p>
