@@ -10,7 +10,7 @@
          <strong class="d-block text-gray-dark">@{{ object.author }}</strong>
        </p>
        </div>
-       <p>{{ object.text|linebreaksbr }}</p>
+       <p>{{ object.text|safe }}</p>
        <p>{{ object.created_date }}</p>
         {% if object.published_date %}
           <p>Published: <b>{{ object.published_date }}</b></p>
@@ -24,7 +24,7 @@
         {% endif %}
         <br><br>
         <p>All articles by: <a href="{% url 'user_news' object.author %}">{{ object.author }}</a></p>
-        <h3>Similar news</h3>
+        <h3>Similar news ({{ news_count }})</h3>
         {% include 'news/includes/posts.html' %}
         {% if one_more %}
           <button id="load_more" class="btn btn-outline-warning">Load more</button>

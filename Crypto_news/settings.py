@@ -25,6 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
+
     'news.apps.NewsConfig',
     'users.apps.UsersConfig'
 ]
@@ -121,3 +124,23 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'amidatonga@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+
+# django-ckeditor
+# https://github.com/django-ckeditor/django-ckeditor
+
+CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            {'name': '', 'items': [
+                'Link',
+                'Format',
+                'Blockquote',
+                'Image',
+            ]},
+        ],
+    },
+}

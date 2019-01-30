@@ -1,5 +1,6 @@
 import itertools
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -17,7 +18,7 @@ class Post(models.Model):
     category = models.ForeignKey(to='news.Category', on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, db_index=True, unique=True)
-    text = models.TextField()
+    text = RichTextUploadingField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
