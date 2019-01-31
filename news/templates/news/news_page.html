@@ -1,8 +1,8 @@
 {% extends 'news/base.html' %}
 {% block content %}
       <div class="post">
-       <h2>{{ object.title }}</h2>
-       <p>Author: {{ object.author }}</p>
+      <p>By {{ object.author }}</p>
+       <h1>{{ object.title }}</h1>
        <div class="media text-muted pt-3 mb-5">
        <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;">
        <p class="media-body pb-3 mb-0 small lh-125">
