@@ -7,7 +7,7 @@
         <form method="POST" class="post-form">
           {% csrf_token %}
           <button type="submit" class="save btn-default">Yes, delete</button>
-          <a href="{% url 'news_page' object.id %}">No, I'm fine</a>
+          <a href="{% url 'news_page' post.slug %}">No, I'm fine</a>
         </form>
 
        <br><br>

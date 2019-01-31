@@ -12,7 +12,7 @@ class Post(models.Model):
     class Meta:
         ordering = ('-published_date', )
 
-    POSTS_ON_PAGE = 3
+    POSTS_ON_PAGE = 7
 
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     category = models.ForeignKey(to='news.Category', on_delete=models.PROTECT, blank=True, null=True)
@@ -58,7 +58,7 @@ class CategoryQueryset(models.QuerySet):
 class Category(models.Model):
 
     class Meta:
-        ordering = ('title', )
+        ordering = ('parent__title', )
 
     parent = models.ForeignKey(to='self', on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=200)

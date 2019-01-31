@@ -2,11 +2,11 @@
 {% block content %}
     <div class="page-header">
         {% if category %}
-            <h1>Category: {{ category.title }}</h1>
+            <h2>Category: {{ category.title }}</h2>
         {% elif author_username %}
-            <h1>All articles by {{ author_username }}</h1>
+            <h2>All articles by {{ author_username }}</h2>
         {% else %}
-            <h1>Crypto News website</h1>
+            <h2>Crypto News website</h2>
         {% endif %}
         {% if query %}
             <p>Search by: <b>{{ query }}</b> (results: {{ news_count }})</p>
@@ -20,6 +20,15 @@
     {% endif %}
 {% endblock content %}
 
+{% block side-bar %}
+      <div class="side-bar">
+        <div class="side-bar-header">
+          <p>HOT AND TRENDING</p>
+        </div>
+
+
+      </div>
+{% endblock side-bar %}
 
 {% block extra_js %}
 <script type="text/javascript">
