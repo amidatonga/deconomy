@@ -13,5 +13,5 @@ class Migration(migrations.Migration):
         migrations.AlterModelOptions(
             name='category',
             options={'ordering': ('parent__title',)},
-        ),
+        )
     ]

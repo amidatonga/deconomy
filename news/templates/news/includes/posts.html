@@ -9,6 +9,7 @@
         {% if not category and post.category %}
             <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
         {% endif %}
+        <p>Views: {{ post.views }}</p>
         <br><br>
     </div>
 {% endfor %}

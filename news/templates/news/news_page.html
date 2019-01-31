@@ -1,4 +1,6 @@
 {% extends 'news/base.html' %}
+
+{% load social_share %}
 {% block content %}
       <div class="post">
       <p>By {{ object.author }}</p>
@@ -18,6 +20,14 @@
         {% if object.category %}
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
+        <p>Views: {{ post.views }}</p>
+        <p>Поделиться:</p>
+        {% post_to_facebook object.get_absolute_url "Post to Facebook!" %}
+        {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_urll "Post to Twitter" %}
+        {% post_to_gplus object.get_absolute_url "Post to Google+!" %}
+        {% post_to_linkedin object.title object.get_absolute_url "Post to LinkedIn" %}
+        {% send_email object.title "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Share via email" %}
+        {% post_to_reddit "New Post: {{object.title}}" object.get_absolute_url %}
         {% if object.author == user %}
         <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
         <a href="{% url 'delete_post' post.slug %}">Delete</a>
@@ -27,6 +37,7 @@
         <h3>Similar news ({{ news_count }})</h3>
         {% include 'news/includes/posts.html' %}
         {% if one_more %}
+          {% csrf_token %}
           <button id="load_more" class="btn btn-outline-warning">Load more</button>
         {% endif %}
 
