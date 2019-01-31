@@ -28,6 +28,9 @@
         {% post_to_linkedin object.title object.get_absolute_url "Post to LinkedIn" %}
         {% send_email object.title "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Share via email" %}
         {% post_to_reddit "New Post: {{object.title}}" object.get_absolute_url %}
+        <div class="telegram-this">
+          <a href="https://telegram.me/share/url?url={{ page_absolute_url }}" target="_blank">Share via Telegram</a>
+        </div>
         {% if object.author == user %}
         <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
         <a href="{% url 'delete_post' post.slug %}">Delete</a>

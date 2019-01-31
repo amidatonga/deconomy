@@ -83,6 +83,7 @@ class NewsPage(DetailView):
         ctx.update({
             'title': post,
             'category': post.category,
+            'page_absolute_url': self.request.build_absolute_uri(post.get_absolute_url())
         })
         return ctx
 
