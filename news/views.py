@@ -31,6 +31,15 @@ def update_news_ctx(ctx, request, news):
     return ctx
 
 
+def view_post(request, post):
+    if 'post__viewed' not in request.session:
+        request.session['post__viewed'] = []
+    if post.id not in request.session['post__viewed']:
+        request.session['post__viewed'].append(post.id)
+        request.session.save()
+        post.view()
+
+
 class NewsList(ListView):
     model = Post
     template_name = 'news/news_list.html'
@@ -68,6 +77,7 @@ class NewsPage(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
         post = get_object_or_404(Post, slug=self.kwargs['slug'])
+        view_post(self.request, post)
         news = Post.objects.filter(category=post.category, published_date__isnull=False).exclude(id=post.id)
         update_news_ctx(ctx, self.request, news)
         ctx.update({

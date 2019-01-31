@@ -16,6 +16,7 @@
     </div>
     {% include 'news/includes/posts.html' %}
     {% if one_more %}
+        {% csrf_token %}
         <button id="load_more" class="btn btn-outline-warning">Load more</button>
     {% endif %}
 {% endblock content %}

@@ -4,7 +4,7 @@ from users import models
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'category')
+    list_display = ('author', 'title', 'category', 'views')
     list_filter = ('author',)
     search_fields = ['title', 'text', 'author__username']
     prepopulated_fields = {'slug': ('title',)}

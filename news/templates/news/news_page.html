@@ -18,6 +18,7 @@
         {% if object.category %}
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
+        <p>Views: {{ post.views }}</p>
         {% if object.author == user %}
         <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
         <a href="{% url 'delete_post' post.slug %}">Delete</a>
@@ -27,6 +28,7 @@
         <h3>Similar news ({{ news_count }})</h3>
         {% include 'news/includes/posts.html' %}
         {% if one_more %}
+          {% csrf_token %}
           <button id="load_more" class="btn btn-outline-warning">Load more</button>
         {% endif %}
 
