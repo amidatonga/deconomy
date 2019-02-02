@@ -32,4 +32,9 @@ class Migration(migrations.Migration):
             name='category',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='news.Category'),
         ),
+        migrations.AddField(
+            model_name='post',
+            name='views',
+            field=models.PositiveIntegerField(default=0),
+        ),
     ]
