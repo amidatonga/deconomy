@@ -1,5 +1,5 @@
 {% for post in news %}
-    <div class="post" id="post-{{ post.id }}">
+    <div class="post-list" id="post-{{ post.id }}">
         <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
         <p>{{ post.text|striptags|truncatechars:200|safe }}</p>
         {% if not author_username %}

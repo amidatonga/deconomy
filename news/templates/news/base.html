@@ -15,6 +15,7 @@
   <title>{{ title }}</title>
 </head>
 <body>
+  <div class="content">
 
   <nav class="navbar navbar-expand-lg">
       <div class="container">
@@ -164,14 +165,18 @@
 
 
 
-<div class="container">
 
 
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
+
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row row-footer">
           <div class="col-12 col-md">
-            <img class="mb-2" src="/docs/4.2/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-            <small class="d-block mb-3 text-muted">© 2017-2018</small>
+            <div class="footer-img">
+              <img src="/media/logo.svg" alt="Deconomy - Digital Economy Today">
+            </div>
+
+            <small class="d-block mb-3 text-muted">© 2018-2019</small>
           </div>
           <div class="col-6 col-md">
             <h5>Features</h5>
@@ -203,9 +208,12 @@
             </ul>
           </div>
         </div>
+        </div>
       </footer>
-</div>
+
 {% block extra_js %}
 {% endblock %}
+
+  </div>
 </body>
 </html>
