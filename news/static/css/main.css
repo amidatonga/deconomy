@@ -17,7 +17,7 @@ body {
 
 
 .navbar-brand {
-  margin-right: 50px;
+  margin-right: 20px;
   width: 220px;
   height: 40px;
   overflow: hidden;
@@ -35,7 +35,7 @@ body {
   display: flex;
   color: #ECEBEB;
   position: relative;
-  padding: 0 5px;
+  padding: 0 3px;
   box-sizing: border-box;
   line-height: 60px;
   border-bottom: 4px solid transparent;
