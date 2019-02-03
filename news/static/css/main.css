@@ -320,3 +320,8 @@ blockquote {
 .django-ckeditor-widget{
   width: 100%;
 }
+
+ul.dropdown-menu li.selected a span:nth-child(2)::before {
+  content: '✓ ';
+  color: black;
+}
