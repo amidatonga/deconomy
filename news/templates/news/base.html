@@ -166,6 +166,22 @@
 
 
 
+  <div class="row pt-5">
+    <div class="col-12">
+      <h2>Категории сайта</h2>
+    </div>
+    {% for parent in parents %}
+    <div class="col-md-6 col-xl-3">
+      <h5>{{ parent }}</h5>
+      <ul class="list-unstyled text-small">
+        {% for category in parent.children %}
+        <li><a class="text-muted" href="{% url 'category_news' category.slug %}">{{ forloop.counter }}. {{ category }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+
 
 
     <footer class="page-footer">
