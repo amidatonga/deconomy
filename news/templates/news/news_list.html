@@ -5,12 +5,14 @@
             <h2>Category: {{ category.title }}</h2>
         {% elif author_username %}
             <h2>All articles by {{ author_username }}</h2>
+        {% elif tag %}
+            <h2>Tag: {{ tag.name }}</h2>
         {% else %}
             <h2>Crypto News website</h2>
         {% endif %}
         {% if query %}
             <p>Search by: <b>{{ query }}</b> (results: {{ news_count }})</p>
-        {% elif category or author_username %}
+        {% elif category or author_username or tag %}
             <p>Articles: {{ news_count }}</p>
         {% endif %}
     </div>

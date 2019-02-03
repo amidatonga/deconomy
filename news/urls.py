@@ -12,5 +12,6 @@ urlpatterns = [
     path('news/<slug:slug>/edit', views.EditNews.as_view(), name='edit_post'),
     path('news/<slug:slug>/delete', views.DeleteNews.as_view(), name='delete_post'),
     path('category/<slug:slug>', views.CategoryView.as_view(), name='category_news'),
+    path('tag/<slug:slug>', views.TagNewsList.as_view(), name='tag_news'),
 
 ]
