@@ -2,21 +2,26 @@
 
 {% load social_share %}
 {% block content %}
-      <div class="post">
-      <p>By {{ object.author }}</p>
-       <h1>{{ object.title }}</h1>
-       <div class="media text-muted pt-3 mb-5">
-       <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;">
-       <p class="media-body pb-3 mb-0 small lh-125">
-         Created by
-         <strong class="d-block text-gray-dark">@{{ object.author }}</strong>
-       </p>
-       </div>
+      <div class="post-page">
+        <div class="post-author-date">
+          <div class="post-author">
+            <p>By {{ object.author }}</p>
+          </div>
+          <div class="post-date">
+            {% if not object.published_date %}
+              <p>Draft created: <b>{{ object.created_date }}</b></p>
+            {% else %}
+              <p><b>{{ object.published_date }}</b></p>
+            {% endif %}
+          </div>
+
+        </div>
+        <div class="post-title">
+          <h1>{{ object.title }}</h1>
+        </div>
+       <!-- <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;"> -->
        <p>{{ object.text|safe }}</p>
        <p>{{ object.created_date }}</p>
-        {% if object.published_date %}
-          <p>Published: <b>{{ object.published_date }}</b></p>
-        {% endif %}
         {% if object.category %}
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}

@@ -1,30 +1,135 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
 
+.content {
+  flex: 1 0 auto;
+}
 
 .navbar {
   background-color: #111e10;
   color: white;
   min-height: 80px;
   margin-bottom: 10px;
-  border: 1px solid red;
+  padding: 0;
 }
 
-.nav-item {
-  border: 1px solid gray;
-
-}
-
-.navbar a {
-  color: white;
-}
-
-.navbar a:hover {
-  color: white;
-
-}
 
 .navbar-brand {
   margin-right: 50px;
+  width: 220px;
+  height: 40px;
+  overflow: hidden;
 }
+
+.navbar-brand img {
+  border: 1px solid gray;
+  width: 360px;
+  margin-top: -155px;
+  margin-left: -70px;
+}
+
+
+.nav-item {
+  display: flex;
+  color: #ECEBEB;
+  position: relative;
+  padding: 0 5px;
+  box-sizing: border-box;
+  line-height: 60px;
+  border-bottom: 4px solid transparent;
+  transition: background-color 0.15s;
+}
+
+
+
+.nav-item:hover {
+    background-color: #2c3a3b;
+    border-bottom: 4px solid #dd7a19;
+    color: white;
+}
+
+.nav-item a {
+  font-size: 17px;
+  margin: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: color 0.3s;
+}
+
+.navbar a {
+  color: #B4B4B4;
+}
+
+.nav-link:hover {
+  color: white;
+}
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  line-height: normal;
+  top: 80px;
+  left: 0;
+  width: 26em;
+  background-color: #2c3a3b;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+}
+
+.nav-item:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 14px;
+  white-space: normal;
+  transition: color 1s;
+  transition: background-color 0.2s;
+}
+
+.dropdown-content a:hover {
+  border-radius: 0;
+  background-color: #111e10;
+  color: white!important;
+}
+
+.dropdown-block {
+  display: block;
+  width: 13em;
+  box-sizing: border-box;
+  float: left;
+  border-right: 1px solid #111e10;
+}
+
+.form-inline input {
+  border: none;
+  background-color: #2c3a3b;
+  min-width: 250px;
+}
+
+
+.form-inline input:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #2c3a3b;
+  color: #D6D6D6;
+}
+
+.fa-search {
+  line-height: 2.5;
+  height: 30px;
+  width: 30px;
+  background: none;
+  border: none;
+  color: #dd7a19;
+}
+
 
 body {
   font-family: 'Raleway', sans-serif;
@@ -38,11 +143,17 @@ h1 {
 }
 
 .row {
+  padding-bottom: 40px;
   background: white;
   padding-left: 10px;
-  padding-top: 10px;
+  padding-top: 20px;
   border-left: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
+}
+
+.col-md-4 {
+  display: block;
+
 }
 
 .page-header {
@@ -54,9 +165,9 @@ h1 {
   border-radius: 50%;
 }
 
-body a {
+/* body a {
   color: black;
-}
+} */
 
 body a:hover {
   text-decoration: none;
@@ -105,4 +216,69 @@ blockquote {
   font-weight: bold;
   display: inline-block;
   margin-top: 20px;
+}
+
+/* CSS for News Page */
+.post-page a {
+  color: #5199fd;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.25s;
+  transition: border-bottom 0.25s;
+}
+
+.post-page a:hover {
+  color: #396eb7;
+  text-decoration: none;
+  border-bottom: 1px solid #396eb7;
+
+}
+
+.post-page img {
+  max-width: 100%;
+  height: inherit !important;
+}
+
+.post-author-date {
+  width: 100%;
+  float: left;
+}
+
+.post-author {
+
+  float: left;
+}
+
+.post-date {
+  float: right;
+}
+
+/* CSS for footer  */
+.page-footer {
+  color: white;
+  padding-top: 30px;
+  background-color: #2c3a3b;
+}
+.row-footer {
+  border: none;
+  background-color: inherit;
+
+}
+
+.footer-img {
+  margin-right: 50px;
+  width: 220px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.footer-img img {
+  border: 1px solid gray;
+  width: 360px;
+  margin-top: -150px;
+  margin-left: -70px;
+}
+
+.footer {
+  flex-shrink: 0;
 }
