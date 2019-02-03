@@ -145,5 +145,6 @@ CKEDITOR_CONFIGS = {
             ]},
         ],
         'format_tags': 'p;h2;h3',
+        'width': '100%',
     },
 }
