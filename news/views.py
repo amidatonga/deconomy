@@ -90,7 +90,7 @@ class NewsPage(DetailView):
 
 class CreateNews(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['category', 'title', 'text']
+    fields = ['category', 'tags', 'title', 'text']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -100,6 +100,7 @@ class CreateNews(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateNews, self).get_context_data(**kwargs)
         context['parent_categories'] = Category.objects.parents()
+        context['tags'] = Tag.objects.all()
         return context
 
 

@@ -26,6 +26,9 @@
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
         <p>Views: {{ post.views }}</p>
+        {% for post_tag in post.tags.all %}
+          <a href="{% url 'tag_news' post_tag.slug %}" class="badge badge-pill badge-light">{{ post_tag.name }}</a>
+        {% endfor %}
         <p>Поделиться:</p>
         {% post_to_facebook object.get_absolute_url "Post to Facebook!" %}
         {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_urll "Post to Twitter" %}

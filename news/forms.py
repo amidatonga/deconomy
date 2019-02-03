@@ -7,6 +7,6 @@ class PublicationForm(forms.ModelForm):
     
     class Meta:
         model = Post
-        fields = ('title', 'category', )
+        fields = ('title', 'category', 'tags', )
 
     text = forms.CharField(widget=CKEditorWidget())
