@@ -25,7 +25,7 @@
                 {{ form.title.label_tag }}
                 {{ form.title }}
             </p>
-            <p>
+            <p class="ckeditor-text-field">
                 {{ form.text.errors }}
                 {{ form.text.label_tag }}
                 {{ form.text}}
@@ -36,3 +36,14 @@
         <br><br>
     </div>
 {% endblock content %}
+
+{% block side-bar %}
+  <div class="profile-side-buttons">
+    <a class="publication-button" href="{% url 'new_post' %}">New Publication</a>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="#">Review Publications</a>
+    <a href="/admin">Site administration</a>
+    <a href="{% url 'exit' %}">Exit Profile</a>
+
+  </div>
+{% endblock side-bar %}
