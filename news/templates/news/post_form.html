@@ -30,6 +30,16 @@
                 {{ form.text.label_tag }}
                 {{ form.text}}
             </p>
+            <p>
+                {{ form.tags.errors }}
+                {{ form.tags.label_tag }}
+                <select id="id_tags" name="tags" multiple class="form-control">
+                    <option value selected>Выбрать теги</option>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
             <button type="submit" class="save btn-default">Save</button>
         </form>
 

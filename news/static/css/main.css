@@ -316,3 +316,7 @@ blockquote {
   display: block;
   max-width: 100%;
 }
+
+.django-ckeditor-widget{
+  width: 100%;
+}
