@@ -253,6 +253,34 @@ blockquote {
   float: right;
 }
 
+/* CSS for Profile page */
+.profile-side-buttons {
+  width: 100%;
+
+}
+
+.profile-side-buttons a {
+  color: black;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 7px;
+  border-left: 4px solid transparent;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  transition: border-left 0.3s;
+  transition: box-shadow 0.3s;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.profile-side-buttons a:hover {
+    border-left: 4px solid orange;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.3);
+    color: white;
+    background-color: #2c3a3b;
+}
+
 /* CSS for footer  */
 .page-footer {
   color: white;
@@ -281,4 +309,10 @@ blockquote {
 
 .footer {
   flex-shrink: 0;
+}
+
+
+.ckeditor-text-field {
+  display: block;
+  max-width: 100%;
 }
