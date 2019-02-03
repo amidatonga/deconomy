@@ -10,6 +10,13 @@
             <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
         {% endif %}
         <p>Views: {{ post.views }}</p>
+        {% for post_tag in post.tags.all %}
+            {% if post_tag != tag %}
+                <a href="{% url 'tag_news' post_tag.slug %}" class="badge badge-pill badge-light">{{ post_tag.name }}</a>
+            {% else %}
+                <span class="badge badge-pill badge-dark">{{ post_tag.name }}</span>
+            {% endif %}
+        {% endfor %}
         <br><br>
     </div>
 {% endfor %}

@@ -12,7 +12,7 @@ from django.views.generic import (
         DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post, Category
+from .models import Post, Category, Tag
 from django.utils import timezone
 from .forms import PublicationForm
 
@@ -147,6 +147,22 @@ class CategoryView(DetailView):
         ctx.update({
             'title': f'Категория: {category.title}',
             'category': category,
+        })
+        return ctx
+
+
+class TagNewsList(ListView):
+    model = Post
+    template_name = 'news/news_list.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(TagNewsList, self).get_context_data(**kwargs)
+        tag = get_object_or_404(Tag, slug=self.kwargs['slug'])
+        news = Post.objects.filter(tags__id=tag.id)
+        update_news_ctx(ctx, self.request, news)
+        ctx.update({
+            'title': f'Tag: {tag.name}',
+            'tag': tag,
         })
         return ctx
 

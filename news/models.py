@@ -22,6 +22,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
+    tags = models.ManyToManyField(to='news.Tag')
 
     def publish(self):
         self.published_date = timezone.now()
@@ -79,3 +80,12 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('category_news', kwargs={'slug': self.slug})
+
+
+class Tag(models.Model):
+
+    name = models.CharField(max_length=32)
+    slug = models.SlugField(max_length=32, db_index=True, unique=True)
+
+    def __str__(self):
+        return self.name
