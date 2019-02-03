@@ -33,8 +33,7 @@
             <p>
                 {{ form.tags.errors }}
                 {{ form.tags.label_tag }}
-                <select id="id_tags" name="tags" multiple class="form-control">
-                    <option value selected>Выбрать теги</option>
+                <select id="id_tags" name="tags" class="selectpicker" multiple data-live-search="true">
                     {% for tag in tags %}
                     <option value="{{ tag.id }}">{{ tag.name }}</option>
                     {% endfor %}
