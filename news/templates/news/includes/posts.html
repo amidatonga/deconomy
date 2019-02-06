@@ -5,7 +5,7 @@
         {% if not author_username %}
             <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author }}</a></p>
         {% endif %}
-        <p>Published: <b>{{ post.published_date}}</b></p>
+        <p>Published: <b>{{ post.published_date|timesince }} ago</b></p>
         {% if not category and post.category %}
             <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
         {% endif %}
