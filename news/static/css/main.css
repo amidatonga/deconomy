@@ -165,9 +165,7 @@ h1 {
   border-radius: 50%;
 }
 
-/* body a {
-  color: black;
-} */
+
 
 body a:hover {
   text-decoration: none;
@@ -197,15 +195,22 @@ blockquote {
     padding-top:15px;
 }
 
-.side-bar {
+.sidebar {
   position: relative;
+
+}
+
+.side-bar {
+
   background-color: #f2f2f2;
   min-height: 400px;
 
 }
 
 .side-bar-header {
-  display: block;
+  bottom: 0;
+  top: 0;
+  height: 250px;
   border-bottom: 2px solid #EDB000;
   color: #757575;
   text-align: center;
