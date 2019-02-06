@@ -40,6 +40,7 @@
           <a href="https://telegram.me/share/url?url={{ page_absolute_url }}" target="_blank">Share via Telegram</a>
         </div>
         {% if object.author == user %}
+        <br>
         <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
         <a href="{% url 'delete_post' post.slug %}">Delete</a>
         {% endif %}
@@ -122,6 +123,7 @@
                             $('#load_more').hide();
                         }
                         processing = false;
+                        $(window).scrollTop($(window).scrollTop()+1);
                     }
                 )
             }
