@@ -1,4 +1,6 @@
 {% extends 'news/base.html' %}
+{% load filters %}
+
 
 {% load social_share %}
 {% block content %}
@@ -9,9 +11,9 @@
           </div>
           <div class="post-date">
             {% if not object.published_date %}
-              <p>Draft created: <b>{{ object.created_date|timesince }} ago</b></p>
+              <p>Draft created: <b>{{ object.created_date|time_ago:"ago" }}</b></p>
             {% else %}
-              <p><b>{{ object.published_date|timesince }} ago</b></p>
+              <p><b>{{ object.published_date|time_ago:"ago" }}</b></p>
             {% endif %}
           </div>
 
@@ -21,7 +23,7 @@
         </div>
        <!-- <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;"> -->
        <p>{{ object.text|safe }}</p>
-       <p>{{ object.created_date|timesince }} ago</p>
+       <p>{{ object.created_date|time_ago:"ago" }}</p>
         {% if object.category %}
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
