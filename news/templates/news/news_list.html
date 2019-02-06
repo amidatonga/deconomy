@@ -77,6 +77,7 @@
                 if (!resp.one_more) {
                     $('#load_more').hide();
                 }
+                $(window).scrollTop($(window).scrollTop()+1);
             }
         )
     });
