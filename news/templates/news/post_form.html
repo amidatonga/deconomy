@@ -56,3 +56,27 @@
 
   </div>
 {% endblock side-bar %}
+
+
+{% block extra_js %}
+<script type="text/javascript">
+
+    $('#id_tags').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        var options = $(this).find('option');
+
+        var idx = this.length - 1;
+        while (idx >= 0 && !options[idx].selected || idx === clickedIndex) {
+            idx = idx - 1;
+        }
+
+        var opt = options[clickedIndex];
+        if (idx >= 0) {
+            $(this).find('option')[idx].after(opt);
+        } else {
+            $(this).find('option')[0].before(opt);
+        }
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+</script>
+{% endblock extra_js %}
