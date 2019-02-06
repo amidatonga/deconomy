@@ -9,9 +9,9 @@
           </div>
           <div class="post-date">
             {% if not object.published_date %}
-              <p>Draft created: <b>{{ object.created_date }}</b></p>
+              <p>Draft created: <b>{{ object.created_date|timesince }} ago</b></p>
             {% else %}
-              <p><b>{{ object.published_date }}</b></p>
+              <p><b>{{ object.published_date|timesince }} ago</b></p>
             {% endif %}
           </div>
 
@@ -21,7 +21,7 @@
         </div>
        <!-- <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;"> -->
        <p>{{ object.text|safe }}</p>
-       <p>{{ object.created_date }}</p>
+       <p>{{ object.created_date|timesince }} ago</p>
         {% if object.category %}
             <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
         {% endif %}
