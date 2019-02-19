@@ -53,7 +53,7 @@ def time_ago(d, text='ago', now=None, reversed=False, time_strings=None):
     delta = now - d
 
     if delta.total_seconds() >= MAX_DELTA_SECONDS_TO_FILTER_AGO:
-        return d
+        return d.strftime('%b %d, %Y')
 
     # Deal with leapyears by subtracing the number of leapdays
     leapdays = calendar.leapdays(d.year, now.year)
