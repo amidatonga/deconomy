@@ -1,43 +1,6 @@
 {% extends 'news/base.html' %}
 {% load staticfiles %}
 
-{% block slider %}
-      <div class="main-slider">
-      <div>
-        <div class="flex-slide">
-          <div class="slide-text">
-            <h1><a href="#">Cross-shard communication could be facilitated by Merkle-proof-verifiable receipts!</a></h1>
-          </div>
-          <div class="slide-footer">
-            First Slide
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="flex-slide">
-          <div class="slide-text">
-            <h1>Crypto Hedge Fund Pantera Capital Seals $130 Million for Third Crypto Venture Fund</h1>
-          </div>
-          <div class="slide-footer">
-            First Slide
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="flex-slide">
-          <div class="slide-text">
-            <h1>Don’t Expect Bitcoin’s Supply to Change, Says Core Maintainer Wlad van der Laan</h1>
-          </div>
-          <div class="slide-footer">
-            First Slide
-          </div>
-        </div>
-      </div>
-
-      </div>
-{% endblock slider %}
-
-
 {% block content %}
     <div class="page-header">
         {% if category %}
@@ -123,18 +86,6 @@
   $(".side-bar").stick_in_parent();
 </script>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.main-slider').slick({
-      infinite: true,
-      speed: 500,
-      fade: true,
-      cssEase: 'linear',
-      autoplay: true,
-      autoplaySpeed: 3000,
-      lazyLoad: 'ondemand',
-    });
-  });
-</script>
+
 
 {% endblock %}

@@ -56,7 +56,7 @@ class NewsList(ListView):
 
 class UserNewsList(ListView):
     model = Post
-    template_name = 'news/news_list.html'
+    template_name = 'news/news_list_sorted.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(UserNewsList, self).get_context_data(**kwargs)
@@ -139,7 +139,7 @@ class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class CategoryView(DetailView):
     model = Category
-    template_name = 'news/news_list.html'
+    template_name = 'news/news_list_sorted.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(CategoryView, self).get_context_data(**kwargs)
@@ -155,7 +155,7 @@ class CategoryView(DetailView):
 
 class TagNewsList(ListView):
     model = Post
-    template_name = 'news/news_list.html'
+    template_name = 'news/news_list_sorted.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(TagNewsList, self).get_context_data(**kwargs)

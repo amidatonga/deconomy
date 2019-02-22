@@ -1,7 +1,18 @@
 body {
   display: flex;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.7em;
+  background-color: #FFFFFF;
 }
+
+
+@media (min-width: 1205px) {
+  .container-fluid{
+    width: 1200px;
+  }
+}
+
 
 .content {
   flex: 1 0 auto;
@@ -131,24 +142,68 @@ body {
 }
 
 
-body {
-  font-family: 'Raleway', sans-serif;
-  line-height: 1.7em;
-  background-color: #f8f8f8;
-}
-
 h1 {
   font-size: 36px;
   font-weight: 900;
 }
 
+/* CSS for slider */
+
+.main-slider {
+  background: green;
+  height: 500px;
+  color: white;
+  margin-bottom: 35px;
+}
+
+.main-slider .slick-slide {
+  height: 500px;
+}
+
+.slick-prev {
+  display: none!important;
+}
+.slick-next {
+  display: none!important;
+}
+
+
+.flex-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.slide-text {
+  padding: 0 15px;
+  padding-bottom: 5px;
+  display: inline-block;
+  margin-top: auto;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 5%,rgba(0,0,0,0.5) 90%);
+}
+
+.slide-footer {
+  border-top: 1px solid #a0a0a0;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.5)
+}
+
+
+
+
 .row {
+  border-radius: 4px;
   padding-bottom: 40px;
   background: white;
-  padding-left: 10px;
-  padding-top: 20px;
-  border-left: 1px solid #f0f0f0;
-  border-right: 1px solid #f0f0f0;
+  padding-left: 5px;
+  padding-top: 15px;
+  box-shadow: 0 2px 15px 8px rgba(0, 0, 0, 0.05);
+
+}
+
+.col-md-8 {
+  padding-right: 5px;
 }
 
 .col-md-4 {
@@ -195,13 +250,8 @@ blockquote {
     padding-top:15px;
 }
 
-.sidebar {
-  position: relative;
-
-}
 
 .side-bar {
-
   background-color: #f2f2f2;
   min-height: 400px;
 
@@ -222,6 +272,15 @@ blockquote {
   display: inline-block;
   margin-top: 20px;
 }
+
+
+
+
+
+
+
+
+
 
 /* CSS for News Page */
 .post-page a {
