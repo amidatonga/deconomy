@@ -36,7 +36,8 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news_page', kwargs={'slug': self.slug})
+        name = 'news_page' if self.published_date else 'draft_page'
+        return reverse(name, kwargs={'slug': self.slug})
 
     # https://keyerror.com/blog/automatically-generating-unique-slugs-in-django
     def save(self, **kwargs):

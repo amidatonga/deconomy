@@ -3,7 +3,7 @@
       <div class="form-section">
         <h2>Change profile data</h2>
         <p><a href="{% url 'profile' %}">Back to Profile</a></p>
-        <form method="POST" class="post-form" enctype="multipart/form-data">
+        <form method="POST" class="post-form post-form-update" enctype="multipart/form-data">
           {% csrf_token %}
           {{ update_user.as_p }}
           {{ update_profile.as_p }}
@@ -14,3 +14,8 @@
       <p>Press exit to logout <a href="{% url 'exit' %}">Exit</a></p>
     </div>
 {% endblock content %}
+
+
+{% block side-bar %}
+    {% include 'news/includes/profile_sidebar.html' %}
+{% endblock side-bar %}

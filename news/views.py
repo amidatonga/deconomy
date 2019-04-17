@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.views.generic import (
         ListView,
@@ -15,6 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Category, Tag
 from django.utils import timezone
 from .forms import PublicationForm
+from users.models import Profile
 
 
 def update_news_ctx(ctx, request, news):
@@ -30,7 +32,6 @@ def update_news_ctx(ctx, request, news):
     ctx['news'] = news[:Post.POSTS_ON_PAGE]
     return ctx
 
-
 def view_post(request, post):
     if 'post__viewed' not in request.session:
         request.session['post__viewed'] = []
@@ -38,6 +39,12 @@ def view_post(request, post):
         request.session['post__viewed'].append(post.id)
         request.session.save()
         post.view()
+
+def publish_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    post.publish()
+    return redirect('news_page', slug=post.slug)
+
 
 
 class NewsList(ListView):
@@ -53,6 +60,18 @@ class NewsList(ListView):
         })
         return ctx
 
+class DraftsList(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'news/news_list_drafts.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(DraftsList, self).get_context_data(**kwargs)
+        news = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
+        update_news_ctx(ctx, self.request, news)
+        ctx.update({
+            'title': 'Drafts',
+        })
+        return ctx
 
 class UserNewsList(ListView):
     model = Post
@@ -65,6 +84,21 @@ class UserNewsList(ListView):
         update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': f'All articles by {self.kwargs["username"]}',
+            'author_username': user.profile.fullname,
+        })
+        return ctx
+
+class UserDraftList(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'news/news_list_drafts.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(UserDraftList, self).get_context_data(**kwargs)
+        user = get_object_or_404(User, username=self.kwargs['username'])
+        news = user.post_set.filter(published_date__isnull=True).order_by('-created_date')
+        update_news_ctx(ctx, self.request, news)
+        ctx.update({
+            'title': f'All drafts by {self.kwargs["username"]}',
             'author_username': self.kwargs['username'],
         })
         return ctx
@@ -76,9 +110,28 @@ class NewsPage(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(NewsPage, self).get_context_data(**kwargs)
-        post = get_object_or_404(Post, slug=self.kwargs['slug'])
+        post = get_object_or_404(Post, slug=self.kwargs['slug'], published_date__isnull=False)
         view_post(self.request, post)
         news = Post.objects.filter(category=post.category, published_date__isnull=False).exclude(id=post.id)
+        update_news_ctx(ctx, self.request, news)
+        ctx.update({
+            'title': post,
+            'category': post.category,
+            'page_absolute_url': self.request.build_absolute_uri(post.get_absolute_url())
+        })
+        return ctx
+
+class DraftPage(LoginRequiredMixin, DetailView):
+    model = Post
+    template_name = 'news/draft_page.html'
+
+
+
+    def get_context_data(self, **kwargs):
+        ctx = super(DraftPage, self).get_context_data(**kwargs)
+        post = get_object_or_404(Post, slug=self.kwargs['slug'], published_date__isnull=True)
+        view_post(self.request, post)
+        news = Post.objects.filter(category=post.category, published_date__isnull=True).exclude(id=post.id)
         update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': post,
@@ -92,9 +145,9 @@ class CreateNews(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['category', 'tags', 'title', 'text']
 
+
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.published_date = timezone.now()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -102,6 +155,8 @@ class CreateNews(LoginRequiredMixin, CreateView):
         context['parent_categories'] = Category.objects.parents()
         context['tags'] = Tag.objects.all()
         return context
+    # def get_success_url(self):
+    #     return reverse('draft_page', kwargs={'slug': self.slug})
 
 
 class EditNews(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -109,8 +164,7 @@ class EditNews(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['category', 'tags', 'title', 'text']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
-        form.instance.published_date = timezone.now()
+        # form.instance.author = self.request.user
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -121,7 +175,7 @@ class EditNews(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author:
+        if self.request.user == news.author or self.request.user.profile.moderator:
             return True
         return False
 
@@ -132,7 +186,7 @@ class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author:
+        if self.request.user == news.author or self.request.user.profile.moderator:
             return True
         return False
 

@@ -4,10 +4,11 @@ from PIL import Image
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    fullname = models.CharField(max_length=50, default='Default Name')
     img = models.ImageField(default='default.jpg', upload_to='user_images')
     age = models.PositiveIntegerField(default='0')
-    copywriter = models.BooleanField(default=False)
+    moderator = models.BooleanField(default=False)
     bio = models.TextField()
 
     def __str__(self):

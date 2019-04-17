@@ -4,7 +4,7 @@
 {% block slider %}
       <div class="main-slider">
       <div>
-        <div class="flex-slide">
+        <div class="flex-slide" style=background-image:url('media/uploads/2019/04/15/bitcoin-exchange.jpg') >
           <div class="slide-text">
             <h1><a href="#">Cross-shard communication could be facilitated by Merkle-proof-verifiable receipts!</a></h1>
           </div>
@@ -14,9 +14,9 @@
         </div>
       </div>
       <div>
-        <div class="flex-slide">
-          <div class="slide-text">
-            <h1>Crypto Hedge Fund Pantera Capital Seals $130 Million for Third Crypto Venture Fund</h1>
+        <div class="flex-slide" style=background-image:url('media/uploads/2019/04/15/bitcoin-exchange.jpg')>
+          <div class="slide-text" >
+            <h1 >Crypto Hedge Fund Pantera Capital Seals $130 Million for Third Crypto Venture Fund</h1>
           </div>
           <div class="slide-footer">
             First Slide
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div>
-        <div class="flex-slide">
+        <div class="flex-slide" style=background-image:url('media/uploads/2019/04/15/bitcoin-exchange.jpg')>
           <div class="slide-text">
             <h1>Don’t Expect Bitcoin’s Supply to Change, Says Core Maintainer Wlad van der Laan</h1>
           </div>
@@ -43,7 +43,7 @@
         {% if category %}
             <h2>Category: {{ category.title }}</h2>
         {% elif author_username %}
-            <h2>All articles by {{ author_username }}</h2>
+            <h2>All articles by {{ author_username.profile.fullname }}</h2>
         {% elif tag %}
             <h2>Tag: {{ tag.name }}</h2>
         {% else %}
@@ -63,26 +63,7 @@
 {% endblock content %}
 
 {% block side-bar %}
-      <div class="side-bar">
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-        <div class="side-bar-header">
-          <p>HOT AND TRENDING</p>
-        </div>
-      </div>
+    {% include 'news/includes/main_sidebar.html' %}
 {% endblock side-bar %}
 
 {% block extra_js %}
@@ -127,7 +108,7 @@
   $(document).ready(function(){
     $('.main-slider').slick({
       infinite: true,
-      speed: 500,
+      speed: 900,
       fade: true,
       cssEase: 'linear',
       autoplay: true,

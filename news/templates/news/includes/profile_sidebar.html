@@ -1,0 +1,23 @@
+{% load filters %}
+
+<div class="side-bar-profile">
+  <div class="profile-img-container">
+    <div class="img-container">
+        <img src="{{ user.profile.img.url }}" alt="avatar">
+    </div>
+  </div>
+  <div class="profile-name-container">
+    <p>{{ user.profile.fullname }}</p>
+  </div>
+</div>
+<div class="profile-side-buttons">
+  <a class="publication-button" href="{% url 'new_post' %}">New Publication</a>
+  <a class="publication-button" href="{% url 'user_drafts' user.username   %}">My Drafts</a>
+  <a href="{% url 'profile' %}">Profile</a>
+  {% if user.profile.moderator %}
+  <a href="{% url 'drafts_list' %}">Review Publications</a>
+  {% endif %}
+  <a href="/admin">Site administration</a>
+  <a href="{% url 'exit' %}">Exit Profile</a>
+
+</div>

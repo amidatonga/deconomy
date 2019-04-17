@@ -1,11 +1,13 @@
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'aktiv-grotesk', sans-serif;
   line-height: 1.7em;
   background-color: #FFFFFF;
 }
 
+
+/* medias */
 
 @media (min-width: 1205px) {
   .container-fluid{
@@ -13,6 +15,8 @@ body {
   }
 }
 
+
+/* header and content */
 
 .content {
   flex: 1 0 auto;
@@ -147,6 +151,7 @@ h1 {
   font-weight: 900;
 }
 
+
 /* CSS for slider */
 
 .main-slider {
@@ -172,6 +177,7 @@ h1 {
   display: flex;
   flex-direction: column;
   height: 100%;
+
 }
 
 .slide-text {
@@ -179,18 +185,18 @@ h1 {
   padding-bottom: 5px;
   display: inline-block;
   margin-top: auto;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 5%,rgba(0,0,0,0.5) 90%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 10%,rgba(0,0,0,0.9) 100%);
 }
 
 .slide-footer {
   border-top: 1px solid #a0a0a0;
   box-sizing: border-box;
   padding: 10px 15px;
-  background-color: rgba(0, 0, 0, 0.5)
+  background-color: rgba(0, 0, 0, 0.9)
 }
 
 
-
+/* rows styles */
 
 .row {
   border-radius: 4px;
@@ -227,14 +233,31 @@ body a:hover {
   color: black;
 }
 
+/* form styles */
+
 .form-section {
-  border: 1px solid gray;
   padding: 20px;
 }
 
 .post-form textarea, .post-form input {
     width: 100%;
+    padding: 5px 10px;
+    border: none;
+    background-color: white;
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.06);
 }
+
+.post-form-update #id_username {
+  color: gray;
+  pointer-events: none;
+}
+
+.post-form-update label[for=id_username] {
+  pointer-events: none;
+}
+
+
+
 
 blockquote {
     display: block;
@@ -251,13 +274,15 @@ blockquote {
 }
 
 
-.side-bar {
-  background-color: #f2f2f2;
-  min-height: 400px;
 
+/* sidebar styles */
+
+.side-bar {
+  min-height: 400px;
 }
 
 .side-bar-header {
+  background-color: black;
   bottom: 0;
   top: 0;
   height: 250px;
@@ -272,6 +297,45 @@ blockquote {
   display: inline-block;
   margin-top: 20px;
 }
+
+/* sidebar profile */
+
+.side-bar-profile {
+  margin-bottom: 20px;
+  /* background-color: #f6f6f6; */
+}
+
+.profile-img-container {
+  padding-top: 10px;
+  width: 100%;
+}
+
+.img-container {
+  max-width: 140px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.profile-img-container img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 3px solid #EDB000;
+}
+
+.profile-name-container {
+  border: 1px transparent solid;
+
+
+}
+.profile-name-container p {
+  font-size: 1.1em;
+  text-align: center;
+  color: #959595;
+}
+
+
 
 
 
@@ -309,12 +373,12 @@ blockquote {
 }
 
 .post-author {
-
   float: left;
 }
 
 .post-date {
   float: right;
+  color: #959595;
 }
 
 /* CSS for Profile page */

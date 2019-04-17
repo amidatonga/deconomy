@@ -3,12 +3,20 @@
 
 {% for post in news %}
     <div class="post-list" id="post-{{ post.id }}">
+        {% if post.published_date %}
         <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
+        {% else %}
+        <h2><a href="{% url 'draft_page' post.slug %}">{{ post.title }}</a></h2>
+        {% endif %}
         <p>{{ post.text|striptags|truncatechars:200|safe }}</p>
         {% if not author_username %}
-            <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author }}</a></p>
+            <p>Author: <a href="{% url 'user_news' post.author %}">{{ post.author.profile.fullname }}</a></p>
         {% endif %}
+        {% if post.published_date %}
         <p>Published: <b>{{ post.published_date|time_ago:"ago" }}</b></p>
+        {% else %}
+        <p>Draft created: <b>{{ post.created_date }}</b></p>
+        {% endif %}
         {% if not category and post.category %}
             <p>Category: <a href="{% url 'category_news' slug=post.category.slug %}">{{ post.category }}</a></p>
         {% endif %}
