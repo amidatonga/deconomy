@@ -17,9 +17,12 @@
   </div>
 
   {% endif %}
-  <div class="side-bar-header">
-    <p>HOT AND TRENDING</p>
-  </div>
+  {% for post in hotnews %}
+      <div class="post-list" id="post-{{ post.id }}">
+          <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
+          <p>Views: {{ post.views }}</p>
+      </div>
+  {% endfor %}
   <div class="side-bar-header">
     <p>HOT AND TRENDING</p>
   </div>

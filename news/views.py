@@ -56,7 +56,20 @@ class NewsList(ListView):
         news = Post.objects.filter(published_date__isnull=False)
         update_news_ctx(ctx, self.request, news)
         ctx.update({
-            'title': 'Main page',
+            'title': 'Deconomy - Digital Economy and Cryptocurrencies',
+        })
+        return ctx
+
+class HotNews(ListView):
+    model = Post
+    template_name = 'news/includes/main_sidebar.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(HotNews, self).get_context_data(**kwargs)
+        hotnews = Post.objects.filter(published_date__isnull=False).order_by('views')
+        update_news_ctx(ctx, self.request, hotnews)
+        ctx.update({
+            'title': 'Deconomy - Digital Economy and Cryptocurrencies',
         })
         return ctx
 

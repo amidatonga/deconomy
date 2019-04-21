@@ -6,34 +6,56 @@
 {% block content %}
       <div class="post-page">
         <div class="post-author-date">
+          <div class="post-author-img">
+              <img src="{{ object.author.profile.img.url }}" alt="avatar">
+          </div>
           <div class="post-author">
-            <p>By {{ object.author.profile.fullname }}</p>
+            By <a href="{% url 'user_news' object.author %}">{{ object.author.profile.fullname }}</a>
           </div>
           <div class="post-date">
-            {% if not object.published_date %}
-              <p>Draft created: <b>{{ object.created_date|time_ago:"ago" }}</b></p>
-            {% else %}
-              <p><b>{{ object.published_date|time_ago:"ago" }}</b></p>
-            {% endif %}
+              <b>{{ object.published_date|time_ago:"ago" }}</b>
           </div>
 
         </div>
         <div class="post-title">
           <h1>{{ object.title }}</h1>
         </div>
-       <!-- <img src="{{ object.author.profile.img.url }}" alt="{{ object.author }}" class="mr-2 rounded avatar-img" style="width: 64px; height: 64px;"> -->
-       <p>{{ object.text|safe }}</p>
-       <p>{{ object.created_date|time_ago:"ago" }}</p>
-        {% if object.category %}
-            <p>Category: <a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></p>
-        {% endif %}
-        <p>Views: {{ post.views }}</p>
-        {% for post_tag in post.tags.all %}
-          <a href="{% url 'tag_news' post_tag.slug %}" class="badge badge-pill badge-light">{{ post_tag.name }}</a>
-        {% endfor %}
-        <p>Поделиться:</p>
-        {% post_to_facebook object.get_absolute_url "Post to Facebook!" %}
-        {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_urll "Post to Twitter" %}
+        <div class="social-media-icon-container">
+                  {% include 'news/includes/svg-icons.html' %}
+        </div>
+        <div class="article-img-header">
+          <div class="article-category">
+            {% if object.category %}
+            <b><a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></b>
+            {% else %}
+            <b>News</b>
+            {% endif %}
+          </div>
+          <div class="article-views">
+            <b>Views: {{ post.views }}</b>
+          </div>
+        </div>
+       <div class="article-text">{{ object.text|safe }}</div>
+       {% if user.is_authenticated %}
+       <p class="hidden-created-date">Created: {{ object.created_date }}</p>
+       {% endif %}
+        <div class="post-tag-container">
+          {% for post_tag in post.tags.all %}
+            <div class="post-tag-badge">
+               <a href="{% url 'tag_news' post_tag.slug %}" class="post-tag-link">{{ post_tag.name }}</a>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="social-media-icon-container">
+                  {% include 'news/includes/svg-icons.html' %}
+        </div>
+
+
+        <div class="facebook-plugin-link">
+          {% post_to_facebook object.get_absolute_url "1" %}
+        </div>
+
+        {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Post to Twitter" %}
         {% post_to_gplus object.get_absolute_url "Post to Google+!" %}
         {% post_to_linkedin object.title object.get_absolute_url "Post to LinkedIn" %}
         {% send_email object.title "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Share via email" %}
@@ -47,7 +69,7 @@
         <a href="{% url 'delete_post' post.slug %}">Delete</a>
         {% endif %}
         <br><br>
-        <p>All articles by: <a href="{% url 'user_news' object.author %}">{{ object.author }}</a></p>
+
         <h3>Similar news ({{ news_count }})</h3>
         {% include 'news/includes/posts.html' %}
         {% if one_more %}
@@ -112,5 +134,22 @@
 </script>
 <script type="text/javascript">
   $(".side-bar").stick_in_parent();
+</script>
+
+<script type="text/javascript">
+
+    var icon = document.getElementsByClassName("facebook-this");
+    icon.innerHTML = "Thank you";
+    icon.setAttribute('onmouseover', 'mOver(this)');
+
+    function mOver(obj) {
+
+      obj.style.fill = "blue"
+    };
+
+    function mOut(obj) {
+      obj.style.fill = "gray"
+    }
+
 </script>
 {% endblock %}
