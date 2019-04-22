@@ -467,14 +467,28 @@ blockquote {
   color: gray;
 }
 
+.edit-delete a {
+  font-size: 0.9em;
+  margin-right: 10px;
+  color: #5199fd;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.25s;
+  transition: border-bottom 0.25s;
+}
 
+.edit-delete a:hover {
+  color: #396eb7;
+  text-decoration: none;
+  border-bottom: 1px solid #396eb7;
+}
 
 
 /* post tags */
 .post-tag-container {
   float: left;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
 }
 
@@ -486,7 +500,6 @@ blockquote {
   margin-bottom: 10px;
   font-size: 0.9em;
 }
-
 
 .post-tag-link {
   display: block;
@@ -514,56 +527,145 @@ blockquote {
 }
 
 
-.social-media-icon-container .socials-icons {
-  float: left;
-  height: 26px;
-  width: 26px;
-  margin-right: 15px;
-  fill: lightgray;
-}
-
-.social-media-icon-container .socials-icons:hover {
-  fill: #dd7a19;
-}
-
-
-.facebook-plugin-link {
-  display: block;
-  float: left;
-  width: 40px;
-  height: 40px;
-  border: 1px solid gray;
-}
-
 .facebook-container {
   float: left;
   margin-right: 15px;
-  height: 26px;
-  width: 26px;
-
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/facebook.svg');
 }
 
-.facebook-this {
-
-  height: 26px;
-  width: 26px;
+.facebook-container:hover {
+  background-image: url('/media/social_icons/facebook-hover.svg');
 }
 
-.facebook-this:hover {
-
+.twitter-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/twitter.svg');
 }
+
+.twitter-container:hover {
+  background-image: url('/media/social_icons/twitter-hover.svg');
+}
+
+.telegram-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/telegram.svg');
+}
+
+.telegram-container:hover {
+  background-image: url('/media/social_icons/telegram-hover.svg');
+}
+
+.google-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/googleplus.svg');
+}
+
+.google-container:hover {
+  background-image: url('/media/social_icons/googleplus-hover.svg');
+}
+
+.linkedin-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/linkedin.svg');
+}
+
+.linkedin-container:hover {
+  background-image: url('/media/social_icons/linkedin-hover.svg');
+}
+
+.reddit-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/reddit.svg');
+}
+
+.reddit-container:hover {
+  background-image: url('/media/social_icons/reddit-hover.svg');
+}
+
+.gmail-container {
+  float: left;
+  margin-right: 15px;
+  height: 21px;
+  width: 21px;
+  background-image: url('/media/social_icons/gmail.svg');
+}
+
+.gmail-container:hover {
+  background-image: url('/media/social_icons/gmail-hover.svg');
+}
+
 
 .facebook-this a {
   display: block;
   position: absolute;
-  height: 26px;
-  width: 26px;
+  height: 21px;
+  width: 21px;
   color: rgba(0, 0, 0, 0);
 }
 
-.facebook-this a:hover {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0);
+.tweet-this a {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
+}
+
+.telegram-this {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
+}
+
+.gplus-this a {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
+}
+
+.linkedin-this a {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
+}
+
+.reddit-this a {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
+}
+
+.mail-this a {
+  display: block;
+  position: absolute;
+  height: 21px;
+  width: 21px;
+  color: rgba(0, 0, 0, 0);
 }
 
 

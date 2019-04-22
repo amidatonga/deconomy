@@ -21,7 +21,7 @@
           <h1>{{ object.title }}</h1>
         </div>
         <div class="social-media-icon-container">
-                  {% include 'news/includes/svg-icons.html' %}
+                  {% include 'news/includes/social-icons.html' %}
         </div>
         <div class="article-img-header">
           <div class="article-category">
@@ -39,6 +39,15 @@
        {% if user.is_authenticated %}
        <p class="hidden-created-date">Created: {{ object.created_date }}</p>
        {% endif %}
+
+       {% if object.author == user or user.profile.moderator %}
+       <div class="edit-delete">
+         <a class="button" href="{% url 'edit_post' post.slug %}"><b>Edit</b></a>
+         <a href="{% url 'delete_post' post.slug %}">Delete</a>
+       </div>
+        <br>
+       {% endif %}
+
         <div class="post-tag-container">
           {% for post_tag in post.tags.all %}
             <div class="post-tag-badge">
@@ -47,30 +56,11 @@
           {% endfor %}
         </div>
         <div class="social-media-icon-container">
-                  {% include 'news/includes/svg-icons.html' %}
+                  {% include 'news/includes/social-icons.html' %}
         </div>
 
-
-        <div class="facebook-plugin-link">
-          {% post_to_facebook object.get_absolute_url "1" %}
-        </div>
-
-        {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Post to Twitter" %}
-        {% post_to_gplus object.get_absolute_url "Post to Google+!" %}
-        {% post_to_linkedin object.title object.get_absolute_url "Post to LinkedIn" %}
-        {% send_email object.title "New Post: {{object.title}}. Check it out!" object.get_absolute_url "Share via email" %}
-        {% post_to_reddit "New Post: {{object.title}}" object.get_absolute_url %}
-        <div class="telegram-this">
-          <a href="https://telegram.me/share/url?url={{ page_absolute_url }}" target="_blank">Share via Telegram</a>
-        </div>
-        {% if object.author == user or user.profile.moderator %}
-        <br>
-        <a class="button" href="{% url 'edit_post' post.slug %}">Edit</a>
-        <a href="{% url 'delete_post' post.slug %}">Delete</a>
-        {% endif %}
         <br><br>
-
-        <h3>Similar news ({{ news_count }})</h3>
+        
         {% include 'news/includes/posts.html' %}
         {% if one_more %}
           {% csrf_token %}
@@ -136,20 +126,4 @@
   $(".side-bar").stick_in_parent();
 </script>
 
-<script type="text/javascript">
-
-    var icon = document.getElementsByClassName("facebook-this");
-    icon.innerHTML = "Thank you";
-    icon.setAttribute('onmouseover', 'mOver(this)');
-
-    function mOver(obj) {
-
-      obj.style.fill = "blue"
-    };
-
-    function mOut(obj) {
-      obj.style.fill = "gray"
-    }
-
-</script>
 {% endblock %}

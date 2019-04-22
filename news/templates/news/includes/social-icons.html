@@ -1,0 +1,31 @@
+{% load social_share %}
+
+
+<div class="facebook-container">
+  {% post_to_facebook object.get_absolute_url "" %}
+</div>
+
+<div class="twitter-container">
+  {% post_to_twitter "New Post: {{object.title}}. Check it out!" object.get_absolute_url "" %}
+</div>
+
+<div class="telegram-container">
+  <a class="telegram-this" href="https://telegram.me/share/url?url={{ page_absolute_url }}" target="_blank"></a>
+</div>
+
+<div class="google-container">
+  {% post_to_gplus object.get_absolute_url "" %}
+</div>
+
+
+<div class="linkedin-container">
+  {% post_to_linkedin object.title object.get_absolute_url "" %}
+</div>
+
+<div class="reddit-container">
+  {% post_to_reddit "New Post: {{object.title}}" object.get_absolute_url "" %}
+</div>
+
+<div class="gmail-container">
+  {% send_email object.title "New Post: {{object.title}}. Check it out!" object.get_absolute_url "" %}
+</div>
