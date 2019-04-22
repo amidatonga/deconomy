@@ -266,6 +266,24 @@ def api_get_news_more(request, template_name='news/includes/posts.html'):
     return JsonResponse({'html': html, 'one_more': one_more})
 
 
+@require_http_methods(['POST', ])
+def api_get_full_news_more(request, template_name='news/includes/full_post.html'):
+
+    post = get_object_or_404(Post, id=request.POST.get('current_news'))
+    category = request.POST.get('category')
+    news = Post.objects.filter(category__slug=category,
+                               published_date__isnull=False,
+                               published_date__lt=post.published_date)
+    one_more = len(news) > 1
+    context = {
+        'object': news.first(),
+        'request': request,
+    }
+    context['post'] = context['object']
+    html = render_to_string(template_name, context=context)
+    return JsonResponse({'html': html, 'one_more': one_more})
+
+
 
 # def new_post(request):
 #     if request.method == "POST":

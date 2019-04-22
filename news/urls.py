@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('api/news/more', views.api_get_news_more, name='api_news_more'),
+    path('api/full_news/more', views.api_get_full_news_more, name='api_full_news_more'),
 
     path('', views.NewsList.as_view(), name='news_list'),
     path('news/drafts', views.DraftsList.as_view(), name='drafts_list'),
