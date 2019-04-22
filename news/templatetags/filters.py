@@ -66,9 +66,9 @@ def time_ago(d, text='ago', now=None, reversed=False, time_strings=None):
 
     # ignore microseconds
     since = delta.days * 24 * 60 * 60 + delta.seconds
-    if since <= 0:
+    if since <= 240:
         # d is in the future compared to now, stop processing.
-        return avoid_wrapping(gettext('0 minutes'))
+        return avoid_wrapping(gettext('JUST NOW'))
     for i, (seconds, name) in enumerate(TIMESINCE_CHUNKS):
         count = since // seconds
         if count != 0:

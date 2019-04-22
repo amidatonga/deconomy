@@ -1,0 +1,38 @@
+{% load filters %}
+
+
+<div class="side-bar">
+
+  {% if user.is_authenticated %}
+
+  <div class="side-bar-profile">
+    <div class="profile-img-container">
+      <div class="img-container">
+          <img src="{{ user.profile.img.url }}" alt="avatar">
+      </div>
+    </div>
+    <div class="profile-name-container">
+      <p>{{ user.profile.fullname }}</p>
+    </div>
+  </div>
+
+  {% endif %}
+  {% for post in hotnews %}
+      <div class="post-list" id="post-{{ post.id }}">
+          <h2><a href="{% url 'news_page' post.slug %}">{{ post.title }}</a></h2>
+          <p>Views: {{ post.views }}</p>
+      </div>
+  {% endfor %}
+  <div class="side-bar-header">
+    <p>HOT AND TRENDING</p>
+  </div>
+  <div class="side-bar-header">
+    <p>HOT AND TRENDING</p>
+  </div>
+  <div class="side-bar-header">
+    <p>HOT AND TRENDING</p>
+  </div>
+  <div class="side-bar-header">
+    <p>HOT AND TRENDING</p>
+  </div>
+</div>
