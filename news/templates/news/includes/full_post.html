@@ -1,0 +1,60 @@
+{% load filters %}
+
+
+<div class="post-page" id="full-post-{{ post.id }}">
+    <div class="post-author-date">
+      <div class="post-author-img">
+          <img src="{{ object.author.profile.img.url }}" alt="avatar">
+      </div>
+      <div class="post-author">
+        By <a href="{% url 'user_news' object.author %}">{{ object.author.profile.fullname }}</a>
+      </div>
+      <div class="post-date">
+          <b>{{ object.published_date|time_ago:"ago" }}</b>
+      </div>
+
+    </div>
+    <div class="post-title">
+      <h1>{{ object.title }}</h1>
+    </div>
+    <div class="social-media-icon-container">
+              {% include 'news/includes/social-icons.html' %}
+    </div>
+    <div class="article-img-header">
+      <div class="article-category">
+        {% if object.category %}
+        <b><a href="{% url 'category_news' slug=object.category.slug %}">{{ object.category }}</a></b>
+        {% else %}
+        <b>News</b>
+        {% endif %}
+      </div>
+      <div class="article-views">
+        <b>Views: {{ post.views }}</b>
+      </div>
+    </div>
+   <div class="article-text">{{ object.text|safe }}</div>
+   {% if user.is_authenticated %}
+   <p class="hidden-created-date">Created: {{ object.created_date }}</p>
+   {% endif %}
+
+   {% if object.author == user or user.profile.moderator %}
+   <div class="edit-delete">
+     <a class="button" href="{% url 'edit_post' post.slug %}"><b>Edit</b></a>
+     <a href="{% url 'delete_post' post.slug %}">Delete</a>
+   </div>
+    <br>
+   {% endif %}
+
+    <div class="post-tag-container">
+      {% for post_tag in post.tags.all %}
+        <div class="post-tag-badge">
+           <a href="{% url 'tag_news' post_tag.slug %}" class="post-tag-link">{{ post_tag.name }}</a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="social-media-icon-container">
+              {% include 'news/includes/social-icons.html' %}
+    </div>
+
+   <br><br>
+  </div>
