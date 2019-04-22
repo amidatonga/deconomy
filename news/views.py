@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -56,7 +57,7 @@ class NewsList(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsList, self).get_context_data(**kwargs)
         news = Post.objects.filter(published_date__isnull=False)
-        update_news_ctx(ctx, self.request, news, hot=6)
+        update_news_ctx(ctx, self.request, news, hot=settings.SIDEBAR_POST_COUNT)
         ctx.update({
             'title': 'Deconomy - Digital Economy and Cryptocurrencies',
         })
@@ -96,7 +97,7 @@ class UserNewsList(ListView):
         ctx = super(UserNewsList, self).get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.kwargs['username'])
         news = user.post_set.filter(published_date__isnull=False)
-        update_news_ctx(ctx, self.request, news, hot=6)
+        update_news_ctx(ctx, self.request, news, hot=settings.SIDEBAR_POST_COUNT)
         ctx.update({
             'title': f'All articles by {self.kwargs["username"]}',
             'author_username': user.profile.fullname,
@@ -128,7 +129,7 @@ class NewsPage(DetailView):
         post = get_object_or_404(Post, slug=self.kwargs['slug'], published_date__isnull=False)
         view_post(self.request, post)
         news = Post.objects.filter(category=post.category, published_date__isnull=False).exclude(id=post.id)
-        update_news_ctx(ctx, self.request, news, hot=6)
+        update_news_ctx(ctx, self.request, news, hot=settings.SIDEBAR_POST_COUNT)
         ctx.update({
             'title': post,
             'category': post.category,
@@ -214,7 +215,7 @@ class CategoryView(DetailView):
         ctx = super(CategoryView, self).get_context_data(**kwargs)
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
         news = category.post_set.filter(published_date__isnull=False)
-        update_news_ctx(ctx, self.request, news, hot=6)
+        update_news_ctx(ctx, self.request, news, hot=settings.SIDEBAR_POST_COUNT)
         ctx.update({
             'title': f'Категория: {category.title}',
             'category': category,
@@ -230,7 +231,7 @@ class TagNewsList(ListView):
         ctx = super(TagNewsList, self).get_context_data(**kwargs)
         tag = get_object_or_404(Tag, slug=self.kwargs['slug'])
         news = Post.objects.filter(tags__id=tag.id)
-        update_news_ctx(ctx, self.request, news, hot=6)
+        update_news_ctx(ctx, self.request, news, hot=settings.SIDEBAR_POST_COUNT)
         ctx.update({
             'title': f'Tag: {tag.name}',
             'tag': tag,
