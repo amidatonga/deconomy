@@ -2,6 +2,7 @@
 
 
 <div class="post-page" id="full-post-{{ post.id }}">
+    <input hidden="hidden" name="url-{{ post.id }}" value="{{ post.get_absolute_url }}">
     <div class="post-author-date">
       <div class="post-author-img">
           <img src="{{ object.author.profile.img.url }}" alt="avatar">
