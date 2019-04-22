@@ -1,6 +1,7 @@
 import itertools
 
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -56,7 +57,7 @@ class Post(models.Model):
         super(Post, self).save(**kwargs)
 
     @classmethod
-    def get_hot_news(cls, count=6):
+    def get_hot_news(cls, count=settings.SIDEBAR_POST_COUNT):
         return cls.objects.filter(published_date__isnull=False).order_by('-views')[:count]
 
 
