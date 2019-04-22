@@ -55,6 +55,10 @@ class Post(models.Model):
 
         super(Post, self).save(**kwargs)
 
+    @classmethod
+    def get_hot_news(cls, count=6):
+        return cls.objects.filter(published_date__isnull=False).order_by('-views')[:count]
+
 
 class CategoryQueryset(models.QuerySet):
 
