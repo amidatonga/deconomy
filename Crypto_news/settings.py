@@ -148,3 +148,5 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+
+SIDEBAR_POST_COUNT = 6

@@ -1,6 +1,7 @@
 import itertools
 
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -54,6 +55,10 @@ class Post(models.Model):
                 self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         super(Post, self).save(**kwargs)
+
+    @classmethod
+    def get_hot_news(cls, count=settings.SIDEBAR_POST_COUNT):
+        return cls.objects.filter(published_date__isnull=False).order_by('-views')[:count]
 
 
 class CategoryQueryset(models.QuerySet):
