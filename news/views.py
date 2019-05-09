@@ -83,6 +83,8 @@ class DraftsList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super(DraftsList, self).get_context_data(**kwargs)
         news = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
+        if not (self.request.user.is_superuser or self.request.user.profile.moderator):
+            news = news.filter(author=self.request.user)
         update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': 'Drafts',
@@ -137,7 +139,7 @@ class NewsPage(DetailView):
         })
         return ctx
 
-class DraftPage(LoginRequiredMixin, DetailView):
+class DraftPage(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Post
     template_name = 'news/draft_page.html'
 
@@ -155,6 +157,12 @@ class DraftPage(LoginRequiredMixin, DetailView):
             'page_absolute_url': self.request.build_absolute_uri(post.get_absolute_url())
         })
         return ctx
+
+    def test_func(self):
+        news = self.get_object()
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
 
 
 class CreateNews(LoginRequiredMixin, CreateView):
@@ -191,9 +199,9 @@ class EditNews(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author or self.request.user.profile.moderator:
-            return True
-        return False
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
 
 
 class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -202,9 +210,9 @@ class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author or self.request.user.profile.moderator:
-            return True
-        return False
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
 
 
 class CategoryView(DetailView):
@@ -252,7 +260,10 @@ def api_get_news_more(request, template_name='news/includes/posts.html'):
     filter_params = {}
     add_query(filter_params, 'category__slug', 'category')
     add_query(filter_params, 'author__username', 'author')
-    filter_params['published_date__lt'] = post.published_date
+    if post.published_date is not None:
+        filter_params['published_date__lt'] = post.published_date
+    else:
+        filter_params['created_date__lt'] = post.created_date
 
     news = Post.objects.filter(**filter_params)
     one_more = len(news) > Post.POSTS_ON_PAGE
