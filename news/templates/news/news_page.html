@@ -44,13 +44,12 @@
       return $(result);
     }
 
-    top_elm = inWindow('div[id^="full-post-"]')[0];
-    var processing;
-    var timerId = 0;
+    var processing = false,
+        didScroll = false,
+        timerId = 0,
+        top_elm = inWindow('div[id^="full-post-"]')[0];
 
-    $('#load_more').on('click', load_more_processor);
-
-    function load_more_processor(e) {
+    function load_more() {
 
         if (processing)
             return false;
@@ -72,10 +71,11 @@
                     $('#load_more').before(resp.html);
                     if (!resp.one_more) {
                         $('#load_more').hide();
+                        didScroll = false;
                     }
-                    processing = false;
                     $(window).scrollTop($(window).scrollTop()+1);
                     current_url = resp.new_url;
+                    processing = false;
                 }
             )
         } else {
@@ -91,9 +91,20 @@
         }
     }
 
-    $(document).ready(function(){
-        $(document).scroll(load_more_processor);
+    $('#load_more').on('click', function(){
+        didScroll = true;
     });
+    $(document).ready(function(){
+        $(document).scroll(function(){
+            didScroll = true;
+        });
+    });
+    setInterval(function(){
+        if (didScroll) {
+            didScroll = false;
+            load_more();
+        }
+    }, 250);
 
 </script>
 <script type="text/javascript">
