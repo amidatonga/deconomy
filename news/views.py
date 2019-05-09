@@ -287,7 +287,7 @@ def api_get_full_news_more(request, template_name='news/includes/full_post.html'
         }
         context['post'] = context['object']
         html = render_to_string(template_name, context=context)
-        response = JsonResponse({'html': html, 'one_more': one_more, 'new_url': post.get_absolute_url()})
+        response = JsonResponse({'html': html, 'one_more': one_more})
     else:
         response = JsonResponse({'html': '', 'one_more': False}, status=400)
     return response
