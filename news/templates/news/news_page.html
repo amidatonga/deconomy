@@ -44,56 +44,60 @@
       return $(result);
     }
 
-    top_elm = inWindow('div[id^="full-post-"]')[0];
-    var processing;
-    var timerId = 0;
+    var processing = false,
+        didScroll = false,
+        top_elm = null;
 
-    $('#load_more').on('click', load_more_processor);
+    function load_more() {
 
-    function load_more_processor(e) {
+        top_elm = inWindow('.post-title')[0];
+        if (top_elm) {
+            current_url = $(top_elm).closest('.post-page').find('input[name^=url-]')[0].value;
+            window.history.pushState("object or string", "Title", current_url);
+        }
 
-        if (processing)
-            return false;
+        if (!processing) {
+            var url = "{% url 'api_full_news_more' %}";
+            var current_news = $('div[id^="full-post-"]').last().attr('id').split('-')[2];
+            var data = {
+                'category': '{{ object.category.slug }}',
+                'current_news': current_news,
+            };
 
-        var url = "{% url 'api_full_news_more' %}";
-        var current_news = $('div[id^="full-post-"]').last().attr('id').split('-')[2];
-        var data = {
-            'category': '{{ object.category.slug }}',
-            'current_news': current_news,
-        };
+            var current_url = null;
 
-        top_elm = inWindow('div[id^="full-post-"]')[0];
-        var current_url = null;
-
-        if ($(window).scrollTop() >= ($(document).height() - $(window).height()) * 0.7){
-            processing = true;
-            $.post(
-                url, data, function (resp) {
-                    $('#load_more').before(resp.html);
-                    if (!resp.one_more) {
-                        $('#load_more').hide();
+            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) * 0.7){
+                processing = true;
+                $.post(
+                    url, data, function (resp) {
+                        $('#load_more').before(resp.html);
+                        if (!resp.one_more) {
+                            $('#load_more').hide();
+                            didScroll = false;
+                        }
+                        $(window).scrollTop($(window).scrollTop()+1);
+                        processing = false;
                     }
-                    processing = false;
-                    $(window).scrollTop($(window).scrollTop()+1);
-                    current_url = resp.new_url;
-                }
-            )
-        } else {
-            if (top_elm) {
-                current_url = $(top_elm).find('input[name^=url-]')[0].value;
+                )
             }
         }
-        if (current_url) {
-            clearTimeout(timerId);
-            timerId = setTimeout(function(e){
-                window.history.pushState("object or string", "Title", current_url);
-            }, 400);
-        }
+
     }
 
-    $(document).ready(function(){
-        $(document).scroll(load_more_processor);
+    $('#load_more').on('click', function(){
+        didScroll = true;
     });
+    $(document).ready(function(){
+        $(document).scroll(function(){
+            didScroll = true;
+        });
+    });
+    setInterval(function(){
+        if (didScroll) {
+            didScroll = false;
+            load_more();
+        }
+    }, 350);
 
 </script>
 <script type="text/javascript">

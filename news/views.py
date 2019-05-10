@@ -1,23 +1,16 @@
+from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.views.generic import (
-        ListView,
-        DetailView,
-        CreateView,
-        UpdateView,
-        DeleteView,
+    ListView, DetailView, CreateView, UpdateView, DeleteView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 from .models import Post, Category, Tag
-from django.utils import timezone
-from .forms import PublicationForm
-from users.models import Profile
 
 
 def update_news_ctx(ctx, request, news, hot=None):
@@ -35,6 +28,7 @@ def update_news_ctx(ctx, request, news, hot=None):
         ctx['hotnews'] = Post.get_hot_news(count=hot)
     return ctx
 
+
 def view_post(request, post):
     if 'post__viewed' not in request.session:
         request.session['post__viewed'] = []
@@ -43,11 +37,11 @@ def view_post(request, post):
         request.session.save()
         post.view()
 
+
 def publish_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
     post.publish()
     return redirect('news_page', slug=post.slug)
-
 
 
 class NewsList(ListView):
@@ -63,6 +57,7 @@ class NewsList(ListView):
         })
         return ctx
 
+
 class HotNews(ListView):
     model = Post
     template_name = 'news/includes/main_sidebar.html'
@@ -76,6 +71,7 @@ class HotNews(ListView):
         })
         return ctx
 
+
 class DraftsList(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'news/news_list_drafts.html'
@@ -83,11 +79,14 @@ class DraftsList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super(DraftsList, self).get_context_data(**kwargs)
         news = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
+        if not (self.request.user.is_superuser or self.request.user.profile.moderator):
+            news = news.filter(author=self.request.user)
         update_news_ctx(ctx, self.request, news)
         ctx.update({
             'title': 'Drafts',
         })
         return ctx
+
 
 class UserNewsList(ListView):
     model = Post
@@ -103,6 +102,7 @@ class UserNewsList(ListView):
             'author_username': user.profile.fullname,
         })
         return ctx
+
 
 class UserDraftList(LoginRequiredMixin, ListView):
     model = Post
@@ -137,11 +137,10 @@ class NewsPage(DetailView):
         })
         return ctx
 
-class DraftPage(LoginRequiredMixin, DetailView):
+
+class DraftPage(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Post
     template_name = 'news/draft_page.html'
-
-
 
     def get_context_data(self, **kwargs):
         ctx = super(DraftPage, self).get_context_data(**kwargs)
@@ -156,11 +155,16 @@ class DraftPage(LoginRequiredMixin, DetailView):
         })
         return ctx
 
+    def test_func(self):
+        news = self.get_object()
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
+
 
 class CreateNews(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['category', 'tags', 'title', 'text']
-
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -191,9 +195,9 @@ class EditNews(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author or self.request.user.profile.moderator:
-            return True
-        return False
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
 
 
 class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -202,9 +206,9 @@ class DeleteNews(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         news = self.get_object()
-        if self.request.user == news.author or self.request.user.profile.moderator:
-            return True
-        return False
+        return any((self.request.user.is_superuser,
+                    self.request.user.profile.moderator,
+                    self.request.user == news.author))
 
 
 class CategoryView(DetailView):
@@ -241,7 +245,6 @@ class TagNewsList(ListView):
 
 @require_http_methods(['POST', ])
 def api_get_news_more(request, template_name='news/includes/posts.html'):
-
     post = get_object_or_404(Post, id=request.POST.get('current_news'))
 
     def add_query(params, q, k):
@@ -252,7 +255,10 @@ def api_get_news_more(request, template_name='news/includes/posts.html'):
     filter_params = {}
     add_query(filter_params, 'category__slug', 'category')
     add_query(filter_params, 'author__username', 'author')
-    filter_params['published_date__lt'] = post.published_date
+    if post.published_date is not None:
+        filter_params['published_date__lt'] = post.published_date
+    else:
+        filter_params['created_date__lt'] = post.created_date
 
     news = Post.objects.filter(**filter_params)
     one_more = len(news) > Post.POSTS_ON_PAGE
@@ -268,22 +274,23 @@ def api_get_news_more(request, template_name='news/includes/posts.html'):
 
 @require_http_methods(['POST', ])
 def api_get_full_news_more(request, template_name='news/includes/full_post.html'):
-
     post = get_object_or_404(Post, id=request.POST.get('current_news'))
     category = request.POST.get('category')
     news = Post.objects.filter(category__slug=category,
                                published_date__isnull=False,
                                published_date__lt=post.published_date)
-    one_more = len(news) > 1
-    context = {
-        'object': news.first(),
-        'request': request,
-    }
-    context['post'] = context['object']
-    html = render_to_string(template_name, context=context)
-    return JsonResponse({'html': html, 'one_more': one_more, 'new_url': post.get_absolute_url()})
-
-
+    if news.exists():
+        one_more = len(news) > 1
+        context = {
+            'object': news.first(),
+            'request': request,
+        }
+        context['post'] = context['object']
+        html = render_to_string(template_name, context=context)
+        response = JsonResponse({'html': html, 'one_more': one_more})
+    else:
+        response = JsonResponse({'html': '', 'one_more': False}, status=400)
+    return response
 
 # def new_post(request):
 #     if request.method == "POST":
@@ -312,11 +319,6 @@ def api_get_full_news_more(request, template_name='news/includes/full_post.html'
 #     else:
 #         form = PublicationForm(instance=post)
 #     return render(request, 'news/post_edit.html', {'form': form })
-
-
-
-
-
 
 
 # def post_list(request):
